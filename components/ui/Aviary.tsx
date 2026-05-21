@@ -1,12 +1,13 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { BirdSVG, BIRD_KINDS as KINDS, type BirdKind } from "@/lib/birds";
 
 type Bird = {
   id: number;
   x: number;
   y: number;
   vx: number;
-  glyph: string;
+  kind: BirdKind;
   dead?: number;
 };
 
@@ -17,10 +18,8 @@ type Projectile = {
   bornAt: number;
 };
 
-const GLYPHS_R = [">v<", ">^<", "~>~", "=<", "-<<"];
-const GLYPHS_L = ["<v>", "<^>", "~<~", ">=", ">>-"];
 const BIRD_HITBOX = 36;
-const STARTING_AMMO = 10;
+const MAX_MISSES = 10;
 
 type Props = { open: boolean };
 
@@ -38,7 +37,7 @@ function birdSpeedRangeForScore(s: number): [number, number] {
 export function Aviary({ open }: Props) {
   const [score, setScore] = useState(0);
   const [best, setBest] = useState(0);
-  const [ammo, setAmmo] = useState(STARTING_AMMO);
+  const [misses, setMisses] = useState(0);
   const [over, setOver] = useState(false);
   const [, setRenderTick] = useState(0);
 
@@ -51,15 +50,15 @@ export function Aviary({ open }: Props) {
 
   // Mirror state into refs so the rAF loop reads fresh values without re-subscribing
   const scoreRef = useRef(score);
-  const ammoRef = useRef(ammo);
+  const missesRef = useRef(misses);
   const overRef = useRef(over);
   scoreRef.current = score;
-  ammoRef.current = ammo;
+  missesRef.current = misses;
   overRef.current = over;
 
   const resetGame = useCallback(() => {
     setScore(0);
-    setAmmo(STARTING_AMMO);
+    setMisses(0);
     setOver(false);
     birdsRef.current = [];
     projectilesRef.current = [];
@@ -87,7 +86,7 @@ export function Aviary({ open }: Props) {
     }
   }, [score, best]);
 
-  // Click: spend a shot, hit-test, end game when ammo runs out (after the shot is resolved)
+  // Click: hit-test, count misses, end game when misses reach the cap
   useEffect(() => {
     if (!open) return;
     const onClick = (e: MouseEvent) => {
@@ -95,7 +94,6 @@ export function Aviary({ open }: Props) {
       const t = e.target as HTMLElement | null;
       if (t?.closest(".aviary-score, .aviary-over, .pill, .theme-toggle, .cmdk, .help-card, .post-reader"))
         return;
-      if (ammoRef.current <= 0) return;
 
       const cx = e.clientX;
       const cy = e.clientY;
@@ -120,11 +118,13 @@ export function Aviary({ open }: Props) {
         bornAt: performance.now(),
       });
 
-      // Spend ammo + score
-      const newAmmo = ammoRef.current - 1;
-      setAmmo(newAmmo);
-      if (killed > 0) setScore((s) => s + killed);
-      if (newAmmo <= 0) setOver(true);
+      if (killed > 0) {
+        setScore((s) => s + killed);
+      } else {
+        const newMisses = missesRef.current + 1;
+        setMisses(newMisses);
+        if (newMisses >= MAX_MISSES) setOver(true);
+      }
     };
     window.addEventListener("click", onClick);
     return () => window.removeEventListener("click", onClick);
@@ -161,17 +161,17 @@ export function Aviary({ open }: Props) {
           lastSpawn.current = now;
           const fromLeft = Math.random() < 0.5;
           const [lo, hi] = birdSpeedRangeForScore(scoreRef.current);
-          const speed = lo + Math.random() * (hi - lo);
+          const kind = KINDS[Math.floor(Math.random() * KINDS.length)];
+          // Hawks fly faster, ducks slower — gives each species a feel.
+          const speedMul = kind === "hawk" ? 1.35 : kind === "duck" ? 0.7 : 1;
+          const speed = (lo + Math.random() * (hi - lo)) * speedMul;
           const y = 80 + Math.random() * (window.innerHeight - 220);
-          const glyph = fromLeft
-            ? GLYPHS_R[Math.floor(Math.random() * GLYPHS_R.length)]
-            : GLYPHS_L[Math.floor(Math.random() * GLYPHS_L.length)];
           birdsRef.current.push({
             id: nextId.current++,
             x: fromLeft ? -60 : window.innerWidth + 60,
             y,
             vx: fromLeft ? speed : -speed,
-            glyph,
+            kind,
           });
         }
       }
@@ -221,7 +221,8 @@ export function Aviary({ open }: Props) {
 
   if (!open) return null;
 
-  const ammoBar = "█".repeat(ammo) + "░".repeat(STARTING_AMMO - ammo);
+  const missesLeft = Math.max(0, MAX_MISSES - misses);
+  const missBar = "█".repeat(missesLeft) + "░".repeat(MAX_MISSES - missesLeft);
 
   return (
     <>
@@ -230,20 +231,32 @@ export function Aviary({ open }: Props) {
         <span>SCORE · {String(score).padStart(3, "0")}</span>
         <span className="dim">BEST · {String(best).padStart(3, "0")}</span>
         <span className="ammo">
-          AMMO · <span className="ammo-bar">{ammoBar}</span> {ammo}/{STARTING_AMMO}
+          LIVES · <span className="ammo-bar">{missBar}</span> {missesLeft}/{MAX_MISSES}
         </span>
         <span className="hint">[ B / ESC to close ]</span>
       </div>
       <div className="aviary-layer" aria-hidden>
-        {birdsRef.current.map((b) => (
-          <span
-            key={b.id}
-            className={"aviary-bird" + (b.dead ? " dead" : "")}
-            style={{ transform: `translate(${b.x}px, ${b.y}px)` }}
-          >
-            {b.dead ? "  ×" : b.glyph}
-          </span>
-        ))}
+        {birdsRef.current.map((b) => {
+          const facingLeft = b.vx < 0;
+          return (
+            <span
+              key={b.id}
+              className={`aviary-bird aviary-bird-${b.kind}` + (b.dead ? " dead" : "")}
+              style={{ transform: `translate(${b.x}px, ${b.y}px)` }}
+            >
+              {b.dead ? (
+                <span className="aviary-x">×</span>
+              ) : (
+                <span
+                  className="aviary-bird-svg"
+                  style={facingLeft ? { transform: "scaleX(-1)" } : undefined}
+                >
+                  <BirdSVG kind={b.kind} />
+                </span>
+              )}
+            </span>
+          );
+        })}
       </div>
       <div className="aviary-shots" ref={projectileLayerRef} aria-hidden />
 
@@ -262,7 +275,9 @@ export function Aviary({ open }: Props) {
               </div>
               <div className="row">
                 <span className="k">accuracy</span>
-                <span className="v">{Math.round((score / STARTING_AMMO) * 100)}%</span>
+                <span className="v">
+                  {score + misses > 0 ? Math.round((score / (score + misses)) * 100) : 0}%
+                </span>
               </div>
             </div>
             <div className="aviary-over-actions">

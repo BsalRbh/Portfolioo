@@ -27,12 +27,18 @@ export function Screensaver({ active }: Props) {
 
     const fontSize = 14;
     const accent =
-      getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#c8ff00";
-    const inkVar = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim();
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--accent")
+        .trim() || "#c8ff00";
+    const inkVar = getComputedStyle(document.documentElement)
+      .getPropertyValue("--ink")
+      .trim();
     const ink = inkVar || "#0b0b0d";
 
     const cols = Math.ceil(window.innerWidth / fontSize);
-    const drops: number[] = new Array(cols).fill(0).map(() => Math.random() * -50);
+    const drops: number[] = new Array(cols)
+      .fill(0)
+      .map(() => Math.random() * -50);
 
     let raf = 0;
     const draw = () => {
@@ -68,7 +74,7 @@ export function Screensaver({ active }: Props) {
     <div className="screensaver" aria-hidden>
       <canvas ref={canvasRef} />
       <div className="screensaver-hint">
-        <div className="line">[ SYSTEM IDLE — 20s ]</div>
+        <div className="line">[ SYSTEM IDLE — 45s ]</div>
         <div className="line dim">move mouse or press any key to wake.</div>
       </div>
     </div>

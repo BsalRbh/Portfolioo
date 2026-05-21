@@ -1,8 +1,10 @@
+import { SectionIdx } from "@/components/chrome/SectionIdx";
+
 export function Contact() {
   return (
     <section id="contact" className="section contact">
       <div className="section-label">
-        <span className="idx">08 / 08</span>
+        <SectionIdx value="08 / 08" />
         <span>Contact</span>
       </div>
       <div className="contact-shell">
@@ -21,6 +23,18 @@ export function Contact() {
             linked:&nbsp;&nbsp;
             <a href="https://www.linkedin.com/in/bishalrajbahak" target="_blank" rel="noreferrer">
               linkedin.com/in/bishalrajbahak
+            </a>
+          </div>
+          <div className="line out">
+            fb:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="https://www.facebook.com/bsal.rbh/" target="_blank" rel="noreferrer">
+              facebook.com/bsal.rbh
+            </a>
+          </div>
+          <div className="line out">
+            ig:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="https://www.instagram.com/bsal.rbh/" target="_blank" rel="noreferrer">
+              instagram.com/bsal.rbh
             </a>
           </div>
           <div className="line out">based:&nbsp;&nbsp;&nbsp;kathmandu, nepal · utc+05:45</div>

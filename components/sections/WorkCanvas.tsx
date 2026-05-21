@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { PROJECTS } from "@/lib/projects";
+import { SectionIdx } from "@/components/chrome/SectionIdx";
 
 type Pos = Record<string, { x: number; y: number }>;
 
@@ -58,7 +59,7 @@ export function WorkCanvas() {
   return (
     <section id="work" className="section projects">
       <div className="section-label">
-        <span className="idx">02 / 08</span>
+        <SectionIdx value="02 / 08" />
         <span>Selected work — drag to rearrange</span>
       </div>
       <div className="canvas-frame">
@@ -75,6 +76,7 @@ export function WorkCanvas() {
               key={p.num}
               className={"proj" + (isDragging ? " dragging" : "")}
               style={{ left: x, top: y }}
+              data-whisper={p.whisper}
               onMouseDown={(e) => startDrag(e, p.num)}
             >
               <div className="pin" />

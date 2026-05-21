@@ -1,23 +1,16 @@
 "use client";
-import { useTheme } from "@/lib/useTheme";
+import { cycleMode } from "@/lib/visualMode";
 
 export function ThemeToggle() {
-  const { theme, toggle } = useTheme();
-  const onClick = () => {
-    toggle();
-    window.dispatchEvent(
-      new CustomEvent("portfolio-syscall", { detail: "$ chmod +x ./theme.sh" })
-    );
-  };
   return (
     <button
       type="button"
       className="theme-toggle"
-      onClick={onClick}
-      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-      title={`Theme: ${theme}`}
+      onClick={() => cycleMode()}
+      aria-label="Cycle visual theme"
+      title="Cycle theme (T)"
     >
-      {theme === "dark" ? "☾" : "☀"}
+      ☾
     </button>
   );
 }

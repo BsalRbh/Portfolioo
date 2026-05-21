@@ -49,6 +49,122 @@ body { cursor: none; }
 a { color: inherit; }
 ::selection { background: var(--accent); color: var(--ink); }
 
+/* CRT mode — toggled by the Konami code. Adds scanlines, a soft RGB split,
+   subtle vignette, and a barely-there flicker. All purely cosmetic. */
+html.crt body {
+  text-shadow:
+    0.6px 0 0 rgba(255, 64, 64, 0.45),
+   -0.6px 0 0 rgba(64, 200, 255, 0.45);
+  filter: contrast(1.04) saturate(1.05) brightness(0.97);
+  animation: crt-flicker 5s steps(60) infinite;
+}
+html.crt::before,
+html.crt::after {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+/* Scanlines */
+html.crt::before {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.22) 0px,
+    rgba(0, 0, 0, 0.22) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+}
+/* Vignette */
+html.crt::after {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+}
+@keyframes crt-flicker {
+  0%, 97%, 100% { opacity: 1; }
+  98%           { opacity: 0.96; }
+  99%           { opacity: 0.99; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.crt body { animation: none; }
+}
+
+/* NEWSPAPER mode — printed-paper look. Warm cream background, deep black ink,
+   serif body text, subtle paper grain. */
+html.newspaper {
+  --ink: #f6f1e3;
+  --paper: #1b1a17;
+  --paper-dim: #6b655a;
+  --accent: #8b1a1a;
+  --line: rgba(27, 26, 23, 0.18);
+  --line-strong: rgba(27, 26, 23, 0.32);
+}
+html.newspaper body {
+  font-family: var(--serif), Georgia, serif;
+  letter-spacing: 0.005em;
+}
+html.newspaper::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9999;
+  background-image: radial-gradient(rgba(27,26,23,0.08) 1px, transparent 1px);
+  background-size: 3px 3px;
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+
+/* BLUEPRINT mode — deep cyan paper with a faint grid, white technical text. */
+html.blueprint {
+  --ink: #0a2540;
+  --paper: #d9eaff;
+  --paper-dim: #6e9ad1;
+  --accent: #ffd166;
+  --line: rgba(217, 234, 255, 0.18);
+  --line-strong: rgba(217, 234, 255, 0.32);
+}
+html.blueprint body {
+  background-image:
+    linear-gradient(rgba(217,234,255,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(217,234,255,0.08) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px;
+}
+
+/* NEON mode — pitch-black, accent-colored bloom on text. */
+html.neon {
+  --ink: #05050a;
+  --paper: #f0f0ff;
+  --paper-dim: #7077a8;
+  --accent: #ff2bd1;
+  --line: rgba(240, 240, 255, 0.10);
+  --line-strong: rgba(255, 43, 209, 0.45);
+}
+html.neon body {
+  text-shadow:
+    0 0 4px rgba(240, 240, 255, 0.35),
+    0 0 12px rgba(255, 43, 209, 0.25);
+}
+html.neon .accent,
+html.neon a {
+  text-shadow:
+    0 0 6px var(--accent),
+    0 0 14px var(--accent);
+}
+
+/* Scrollbars — match the HUD aesthetic across the whole page */
+html { scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 0;
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+*::-webkit-scrollbar-corner { background: transparent; }
+
 /* dotted grid background */
 body::before {
   content: "";
@@ -515,6 +631,35 @@ footer.site-footer .big {
   color: var(--paper); letter-spacing: -0.03em;
 }
 
+/* Ghost letter — flies into the cmdk to teach the type-to-search behavior */
+.ghost-letter {
+  position: fixed;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 120px;
+  line-height: 1;
+  color: var(--accent);
+  text-shadow: 0 0 24px var(--accent);
+  pointer-events: none;
+  z-index: 210;
+  animation: ghost-rise 450ms cubic-bezier(.2,.7,.2,1) forwards;
+}
+@keyframes ghost-rise {
+  0%   { opacity: 0;   transform: translate(-50%, -50%) scale(0.6); }
+  20%  { opacity: 0.9; transform: translate(-50%, -50%) scale(1.05); }
+  100% {
+    opacity: 0;
+    /* Fly up and into the cmdk, which mounts at top: 14vh */
+    transform: translate(-50%, calc(-50% - 36vh)) scale(0.35);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ghost-letter { animation: none; opacity: 0; }
+}
+
 /* Command palette */
 .cmdk-shroud {
   position: fixed; inset: 0; background: rgba(11, 11, 13, 0.85); backdrop-filter: blur(6px);
@@ -557,6 +702,142 @@ footer.site-footer .big {
 .help-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--line); font-size: 12px; }
 .help-row kbd { border: 1px solid var(--line-strong); padding: 2px 6px; border-radius: 3px; color: var(--accent); margin-left: 4px; }
 
+/* Away overlay — full-screen "come back" while the tab is hidden */
+.away-overlay {
+  position: fixed; inset: 0; z-index: 400;
+  background: var(--ink);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: var(--paper);
+  font-family: var(--mono);
+  pointer-events: none;
+}
+.away-overlay.fading {
+  animation: away-out 280ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.away-face {
+  font-size: clamp(64px, 14vw, 160px);
+  line-height: 1;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+  margin-bottom: 28px;
+  animation: away-blink 2.6s ease-in-out infinite;
+}
+.away-text {
+  font-size: clamp(40px, 10vw, 120px);
+  font-family: var(--serif);
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.away-sub {
+  margin-top: 24px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  position: relative; z-index: 1;
+}
+
+/* Animated message that types itself in */
+.away-msg {
+  position: relative; z-index: 1;
+  margin-top: 18px;
+  font-family: var(--mono);
+  font-size: clamp(14px, 2vw, 18px);
+  color: var(--paper);
+  letter-spacing: 0.02em;
+  min-height: 1.4em;
+}
+.away-msg .caret {
+  display: inline-block;
+  width: 8px; height: 1em;
+  margin-left: 4px;
+  vertical-align: -2px;
+  background: var(--accent);
+  animation: away-caret 700ms steps(1) infinite;
+}
+@keyframes away-caret {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Live "away XX:XX" timer */
+.away-clock {
+  position: relative; z-index: 1;
+  margin-top: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  display: inline-flex; gap: 10px; align-items: baseline;
+}
+.away-clock .lbl { color: var(--paper-dim); }
+.away-clock .val {
+  color: var(--accent);
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+
+/* Floating ASCII birds — drift across behind the text */
+.away-birds {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.away-bird {
+  position: absolute;
+  left: -120px;
+  width: 64px; height: 32px;
+  opacity: 0.55;
+  animation-name: away-bird-fly;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.away-bird.rtl {
+  animation-name: away-bird-fly-rtl;
+  left: auto; right: -120px;
+}
+.away-bird-inner {
+  display: inline-block;
+  width: 100%; height: 100%;
+}
+.away-bird-inner svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.away-bird.rtl .away-bird-inner { transform: scaleX(-1); }
+
+/* Species colors — match the Aviary palette so birds look consistent */
+.away-bird-sparrow { color: #6b7280; }
+.away-bird-hawk    { color: #b45309; }
+.away-bird-duck    { color: #1e3a8a; }
+.away-bird-swallow { color: #4c1d95; }
+.away-bird-crow    { color: #0b0b0b; }
+@keyframes away-bird-fly {
+  0%   { transform: translateX(0);                              }
+  100% { transform: translateX(calc(100vw + 120px));            }
+}
+@keyframes away-bird-fly-rtl {
+  0%   { transform: translateX(0);                              }
+  100% { transform: translateX(calc(-100vw - 120px));           }
+}
+@media (prefers-reduced-motion: reduce) {
+  .away-bird, .away-msg .caret { animation: none; }
+}
+
+/* Make sure the centered face/text sit above the birds */
+.away-face, .away-text { position: relative; z-index: 1; }
+@keyframes away-out { from { opacity: 1 } to { opacity: 0 } }
+@keyframes away-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%           { transform: scaleY(0.1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .away-face { animation: none; }
+  .away-overlay, .away-overlay.fading { animation: none; }
+}
+
 /* Screensaver (matrix-rain) */
 .screensaver {
   position: fixed; inset: 0; z-index: 250;
@@ -576,12 +857,6 @@ footer.site-footer .big {
 }
 .screensaver-hint .dim { color: var(--paper-dim); margin-top: 4px; font-size: 10px; }
 
-/* Inverse mode */
-html.inverse #cursor { left: 50%; top: 50%; }
-html.inverse #cursor .label { display: none; }
-html.inverse body { cursor: grab; }
-html.inverse-dragging body, html.inverse-dragging * { cursor: grabbing !important; user-select: none; }
-
 /* Aviary easter-egg game */
 .aviary-layer, .aviary-shots {
   position: fixed; inset: 0;
@@ -590,13 +865,42 @@ html.inverse-dragging body, html.inverse-dragging * { cursor: grabbing !importan
 }
 .aviary-bird {
   position: absolute; top: 0; left: 0;
-  font-family: var(--mono); font-size: 14px;
   color: var(--paper);
-  white-space: pre;
   will-change: transform;
   transition: opacity 400ms ease;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.aviary-bird-svg { display: inline-block; transform-origin: 50% 50%; }
+.aviary-bird-svg svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.aviary-bird-sparrow .aviary-bird-svg { width: 40px; height: 20px; }
+.aviary-bird-sparrow { color: #6b7280; }
+.aviary-bird-hawk    .aviary-bird-svg { width: 68px; height: 34px; }
+.aviary-bird-hawk    { color: #b45309; }
+.aviary-bird-duck    .aviary-bird-svg { width: 56px; height: 28px; }
+.aviary-bird-duck    { color: #1e3a8a; }
+.aviary-bird-swallow .aviary-bird-svg { width: 50px; height: 24px; }
+.aviary-bird-swallow { color: #4c1d95; }
+.aviary-bird-crow    .aviary-bird-svg { width: 60px; height: 30px; filter: drop-shadow(0 0 1px var(--paper)); }
+.aviary-bird-crow    { color: #0b0b0b; }
+.aviary-bird .aviary-x {
+  font-family: var(--mono); font-size: 18px; color: var(--accent);
 }
 .aviary-bird.dead { color: var(--accent); opacity: 0; }
+
+/* Wing flap — each species can override duration for its own rhythm */
+.aviary-bird .wing {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: aviary-flap 320ms ease-in-out infinite alternate;
+}
+.aviary-bird-hawk    .wing { animation-duration: 520ms; }
+.aviary-bird-duck    .wing { animation-duration: 260ms; }
+.aviary-bird-swallow .wing { animation-duration: 220ms; }
+.aviary-bird-crow    .wing { animation-duration: 420ms; }
+@keyframes aviary-flap {
+  0%   { transform: scaleY(1)   translateY(0); }
+  100% { transform: scaleY(0.4) translateY(-2px); }
+}
 .aviary-shot {
   position: absolute;
   width: 6px; height: 6px;
@@ -847,4 +1151,74 @@ html.inverse-dragging body, html.inverse-dragging * { cursor: grabbing !importan
   .cmdk { width: 92vw; }
   .help-card { padding: 22px 20px; }
   .help-card h3 { font-size: 24px; }
+}
+
+/* Mobile FAB — hidden on devices that can hover (desktop), visible on touch */
+.mobile-fab { display: none; }
+@media (hover: none) {
+  .mobile-fab {
+    display: block;
+    position: fixed;
+    right: 18px;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    z-index: 90;
+    pointer-events: none;
+  }
+  .mobile-fab-toggle,
+  .mobile-fab-action {
+    pointer-events: auto;
+    width: 48px; height: 48px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 18px;
+    line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    transition: transform 220ms cubic-bezier(.2,.7,.2,1), opacity 180ms ease, background 120ms ease;
+  }
+  .mobile-fab-toggle {
+    position: relative;
+    z-index: 2;
+    background: var(--accent);
+    color: var(--ink);
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .mobile-fab-toggle:active { transform: scale(0.94); }
+  .mobile-fab-action {
+    position: absolute;
+    right: 0; bottom: 0;
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+    pointer-events: none;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+  }
+  .mobile-fab-action .lbl {
+    font-size: 7px;
+    letter-spacing: 0.12em;
+    color: var(--paper-dim);
+    margin-top: 1px;
+  }
+  /* Fan up — each action sits further above the toggle */
+  .mobile-fab.open .mobile-fab-action {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .mobile-fab.open .mobile-fab-action:nth-child(1) { transform: translateY(-64px)  scale(1); }
+  .mobile-fab.open .mobile-fab-action:nth-child(2) { transform: translateY(-122px) scale(1); }
+  .mobile-fab.open .mobile-fab-action:nth-child(3) { transform: translateY(-180px) scale(1); }
+  .mobile-fab.open .mobile-fab-action:nth-child(4) { transform: translateY(-238px) scale(1); }
+  .mobile-fab.open .mobile-fab-action:nth-child(5) { transform: translateY(-296px) scale(1); }
+  /* Stagger the entrance */
+  .mobile-fab .mobile-fab-action:nth-child(1) { transition-delay: 0ms; }
+  .mobile-fab .mobile-fab-action:nth-child(2) { transition-delay: 30ms; }
+  .mobile-fab .mobile-fab-action:nth-child(3) { transition-delay: 60ms; }
+  .mobile-fab .mobile-fab-action:nth-child(4) { transition-delay: 90ms; }
+  .mobile-fab .mobile-fab-action:nth-child(5) { transition-delay: 120ms; }
 }

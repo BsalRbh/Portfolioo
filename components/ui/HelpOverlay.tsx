@@ -34,16 +34,12 @@ export function HelpOverlay({ open, onClose }: Props) {
           <kbd>R</kbd>
         </div>
         <div className="help-row">
-          <span>Toggle theme</span>
+          <span>Cycle theme (dark / light / crt / …)</span>
           <kbd>T</kbd>
         </div>
         <div className="help-row">
           <span>Toggle aviary (shoot birds)</span>
           <kbd>B</kbd>
-        </div>
-        <div className="help-row">
-          <span>Toggle inverse mode</span>
-          <kbd>I</kbd>
         </div>
         <div className="help-row">
           <span>Start screensaver</span>

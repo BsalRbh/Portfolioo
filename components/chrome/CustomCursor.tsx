@@ -20,17 +20,8 @@ export function CustomCursor() {
       my = e.clientY;
     };
     const tick = () => {
-      const inverse = document.documentElement.classList.contains("inverse");
-      if (inverse) {
-        // Cursor pinned to viewport center; the world moves under it.
-        const cx = window.innerWidth / 2;
-        const cy = window.innerHeight / 2;
-        tx += (cx - tx) * 0.35;
-        ty += (cy - ty) * 0.35;
-      } else {
-        tx += (mx - tx) * 0.35;
-        ty += (my - ty) * 0.35;
-      }
+      tx += (mx - tx) * 0.35;
+      ty += (my - ty) * 0.35;
       const wrap = wrapRef.current;
       if (wrap) wrap.style.transform = `translate(${tx}px, ${ty}px) translate(-50%, -50%)`;
       const label = labelRef.current;

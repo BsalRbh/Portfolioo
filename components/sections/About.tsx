@@ -1,8 +1,10 @@
+import { SectionIdx } from "@/components/chrome/SectionIdx";
+
 export function About() {
   return (
     <section id="about" className="section">
       <div className="section-label">
-        <span className="idx">03 / 08</span>
+        <SectionIdx value="03 / 08" />
         <span>About</span>
       </div>
       <div className="two-col">

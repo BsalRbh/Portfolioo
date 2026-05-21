@@ -8,11 +8,10 @@ type Props = {
   onClose: () => void;
   toggleTheme: () => void;
   toggleAviary: () => void;
-  toggleInverse: () => void;
   startScreensaver: () => void;
 };
 
-export function CommandPalette({ open, seed, onClose, toggleTheme, toggleAviary, toggleInverse, startScreensaver }: Props) {
+export function CommandPalette({ open, seed, onClose, toggleTheme, toggleAviary, startScreensaver }: Props) {
   const [q, setQ] = useState("");
   const [i, setI] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -49,14 +48,16 @@ export function CommandPalette({ open, seed, onClose, toggleTheme, toggleAviary,
       window.location.href = "mailto:bsl.rbh@gmail.com";
     } else if (cmd.id === "act:linkedin") {
       window.open("https://www.linkedin.com/in/bishalrajbahak", "_blank");
+    } else if (cmd.id === "act:facebook") {
+      window.open("https://www.facebook.com/bsal.rbh/", "_blank");
+    } else if (cmd.id === "act:instagram") {
+      window.open("https://www.instagram.com/bsal.rbh/", "_blank");
     } else if (cmd.id === "act:reset") {
       window.dispatchEvent(new CustomEvent("portfolio-action", { detail: "reset-canvas" }));
     } else if (cmd.id === "act:theme") {
       toggleTheme();
     } else if (cmd.id === "act:aviary") {
       toggleAviary();
-    } else if (cmd.id === "act:inverse") {
-      toggleInverse();
     } else if (cmd.id === "act:screensaver") {
       startScreensaver();
     }

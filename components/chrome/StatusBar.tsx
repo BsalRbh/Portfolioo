@@ -5,8 +5,7 @@ import { ThemeToggle } from "./ThemeToggle";
 type Props = {
   onCommandClick: () => void;
   onHelpClick: () => void;
-  inverse: boolean;
-  onInverseClick: () => void;
+  onAviaryClick: () => void;
 };
 
 type BatteryInfo = { level: number; charging: boolean } | null;
@@ -22,7 +21,7 @@ interface NavigatorWithBattery extends Navigator {
 
 const DEFAULT_LOCATION = "KATHMANDU, NP · 27.71° N";
 
-export function StatusBar({ onCommandClick, onHelpClick, inverse, onInverseClick }: Props) {
+export function StatusBar({ onCommandClick, onHelpClick, onAviaryClick }: Props) {
   const [clock, setClock] = useState("--:--:--");
   const [battery, setBattery] = useState<BatteryInfo>(null);
   const [net, setNet] = useState<string>("");
@@ -109,16 +108,11 @@ export function StatusBar({ onCommandClick, onHelpClick, inverse, onInverseClick
       <div className="group">
         {batteryLabel && <span className="meter">{batteryLabel}</span>}
         {net && <span className="meter">NET · {net}</span>}
-        <button
-          type="button"
-          className={"pill" + (inverse ? " on" : "")}
-          onClick={onInverseClick}
-          title="Inverse mode — drag the world"
-        >
-          ⇆ · INVERT
-        </button>
         <button type="button" className="pill" onClick={onCommandClick}>
           ⌘K · COMMAND
+        </button>
+        <button type="button" className="pill" onClick={onAviaryClick}>
+          B · GAME
         </button>
         <button type="button" className="pill" onClick={onHelpClick}>
           ? · KEYS

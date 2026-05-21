@@ -1,5 +1,6 @@
 "use client";
 import { useRef } from "react";
+import { SectionIdx } from "@/components/chrome/SectionIdx";
 
 const STEPS = [
   {
@@ -65,7 +66,7 @@ export function Process() {
   return (
     <section id="process" className="section">
       <div className="section-label">
-        <span className="idx">04 / 08</span>
+        <SectionIdx value="04 / 08" />
         <span>Process — five steps, repeated forever →</span>
       </div>
       <div className="process-rail" ref={railRef} onMouseDown={onMouseDown}>

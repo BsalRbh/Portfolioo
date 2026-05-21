@@ -7,6 +7,7 @@ export type Project = {
   x: number;
   y: number;
   desc: string;
+  whisper: string;
 };
 
 export const PROJECTS: Project[] = [
@@ -19,6 +20,7 @@ export const PROJECTS: Project[] = [
     x: 60,
     y: 50,
     desc: "Full-stack work at One Accord — React/Next on the front, Go services on the back. Building for a US-based team from Kathmandu.",
+    whisper: "$ tail -f /var/log/oneaccord/api.log",
   },
   {
     num: "02",
@@ -29,6 +31,7 @@ export const PROJECTS: Project[] = [
     x: 380,
     y: 90,
     desc: "Worked across a handful of internal projects at Webpoint Solutions — frontends in React/Next, services in Go.",
+    whisper: "$ git log --since='2 years ago' --author='bishal'",
   },
   {
     num: "03",
@@ -39,6 +42,7 @@ export const PROJECTS: Project[] = [
     x: 700,
     y: 30,
     desc: "End-to-end commerce build — storefront in Next.js, cart/checkout/inventory services in Go, postgres underneath.",
+    whisper: "$ psql -c 'SELECT * FROM orders ORDER BY ts DESC LIMIT 5'",
   },
   {
     num: "04",
@@ -49,6 +53,7 @@ export const PROJECTS: Project[] = [
     x: 140,
     y: 320,
     desc: "Keyboard-first, draggable, slightly weird. You're looking at it.",
+    whisper: "$ cat /dev/self | sha256sum",
   },
   {
     num: "05",
@@ -59,5 +64,6 @@ export const PROJECTS: Project[] = [
     x: 460,
     y: 380,
     desc: "Headless React primitives I keep reusing across projects. Composable, themable.",
+    whisper: "$ npm pack && tree dist/",
   },
 ];

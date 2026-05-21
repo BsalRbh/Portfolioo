@@ -24,9 +24,10 @@ export const COMMANDS: Command[] = [
   { id: "goto:contact", label: "Go to Contact", hint: "g x" },
   { id: "act:email", label: "Compose email", hint: "↵" },
   { id: "act:linkedin", label: "Open LinkedIn", hint: "↵" },
+  { id: "act:facebook", label: "Open Facebook", hint: "↵" },
+  { id: "act:instagram", label: "Open Instagram", hint: "↵" },
   { id: "act:reset", label: "Reset project layout", hint: "↵" },
-  { id: "act:theme", label: "Toggle theme (dark / light)", hint: "↵" },
+  { id: "act:theme", label: "Cycle theme (dark / light / crt / newspaper / blueprint / neon)", hint: "t" },
   { id: "act:aviary", label: "Toggle aviary (shoot the birds)", hint: "b" },
-  { id: "act:inverse", label: "Toggle inverse mode (drag the world)", hint: "i" },
   { id: "act:screensaver", label: "Start screensaver", hint: "s" },
 ];

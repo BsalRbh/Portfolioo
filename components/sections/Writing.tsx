@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { POSTS } from "@/lib/posts";
+import { SectionIdx } from "@/components/chrome/SectionIdx";
 
 export function Writing() {
   const [top, setTop] = useState(0);
@@ -20,7 +21,7 @@ export function Writing() {
   return (
     <section id="writing" className="section">
       <div className="section-label">
-        <span className="idx">05 / 08</span>
+        <SectionIdx value="05 / 08" />
         <span>Writing — click to cycle the stack</span>
       </div>
       <div className="two-col">

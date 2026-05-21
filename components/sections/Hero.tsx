@@ -40,12 +40,13 @@ export function Hero() {
     return () => clearInterval(id);
   }, []);
 
+
   return (
     <section id="hero" className="section hero">
       <div className="hero-main">
         <div>
           <div className="eyebrow">
-            <span className="live">●</span> &nbsp; portfolio · v26.05 — last commit 2d ago
+            <span className="live">●</span> &nbsp; portfolio
           </div>
           <h1>
             <span className="alt">bishal</span>

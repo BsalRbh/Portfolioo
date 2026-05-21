@@ -1,10 +1,11 @@
 import { STATIONS } from "@/lib/stations";
+import { SectionIdx } from "@/components/chrome/SectionIdx";
 
 export function Resume() {
   return (
     <section id="cv" className="section">
       <div className="section-label">
-        <span className="idx">06 / 08</span>
+        <SectionIdx value="06 / 08" />
         <span>CV — a non-linear line</span>
       </div>
       <div className="resume">

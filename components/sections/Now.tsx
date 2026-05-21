@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { SectionIdx } from "@/components/chrome/SectionIdx";
 
 export function Now() {
   const [time, setTime] = useState<Date | null>(null);
@@ -17,7 +18,7 @@ export function Now() {
   return (
     <section id="now" className="section">
       <div className="section-label">
-        <span className="idx">07 / 08</span>
+        <SectionIdx value="07 / 08" />
         <span>Now — what I&apos;m doing this week</span>
       </div>
       <div className="now-board">
