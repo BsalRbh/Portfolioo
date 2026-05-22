@@ -6,6 +6,7 @@ type Props = {
   onCommandClick: () => void;
   onHelpClick: () => void;
   onAviaryClick: () => void;
+  onLeaderboardClick: () => void;
 };
 
 type BatteryInfo = { level: number; charging: boolean } | null;
@@ -21,7 +22,7 @@ interface NavigatorWithBattery extends Navigator {
 
 const DEFAULT_LOCATION = "KATHMANDU, NP · 27.71° N";
 
-export function StatusBar({ onCommandClick, onHelpClick, onAviaryClick }: Props) {
+export function StatusBar({ onCommandClick, onHelpClick, onAviaryClick, onLeaderboardClick }: Props) {
   const [clock, setClock] = useState("--:--:--");
   const [battery, setBattery] = useState<BatteryInfo>(null);
   const [net, setNet] = useState<string>("");
@@ -113,6 +114,9 @@ export function StatusBar({ onCommandClick, onHelpClick, onAviaryClick }: Props)
         </button>
         <button type="button" className="pill" onClick={onAviaryClick}>
           B · GAME
+        </button>
+        <button type="button" className="pill" onClick={onLeaderboardClick}>
+          L · BOARD
         </button>
         <button type="button" className="pill" onClick={onHelpClick}>
           ? · KEYS

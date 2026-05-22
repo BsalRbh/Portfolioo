@@ -12,6 +12,7 @@ import { AwayOverlay } from "./ui/AwayOverlay";
 import { CommandPalette } from "./ui/CommandPalette";
 import { HelpOverlay } from "./ui/HelpOverlay";
 import { Aviary } from "./ui/Aviary";
+import { LeaderboardOverlay } from "./ui/LeaderboardOverlay";
 import { Screensaver } from "./ui/Screensaver";
 import { Hero } from "./sections/Hero";
 import { WorkCanvas } from "./sections/WorkCanvas";
@@ -33,6 +34,7 @@ export function AppShell({ posts }: { posts: PostMeta[] }) {
   const [cmdSeed, setCmdSeed] = useState<string>("");
   const [helpOpen, setHelpOpen] = useState(false);
   const [aviaryOpen, setAviaryOpen] = useState(false);
+  const [leaderboardOpen, setLeaderboardOpen] = useState(false);
   const [idle, setIdle] = useState(false);
 
   // Restore the last chosen visual mode (dark / light / crt / newspaper / blueprint / neon)
@@ -100,6 +102,15 @@ export function AppShell({ posts }: { posts: PostMeta[] }) {
   const toggleAviary = useCallback(() => {
     setAviaryOpen((o) => !o);
   }, []);
+  const toggleLeaderboard = useCallback(() => {
+    setLeaderboardOpen((o) => !o);
+  }, []);
+  const openLeaderboard = useCallback(() => {
+    setLeaderboardOpen(true);
+  }, []);
+  const closeLeaderboard = useCallback(() => {
+    setLeaderboardOpen(false);
+  }, []);
   const startScreensaver = useCallback(() => {
     setIdle(true);
     syscall("$ /sbin/screensaver --start");
@@ -156,6 +167,7 @@ export function AppShell({ posts }: { posts: PostMeta[] }) {
         setCmdOpen(false);
         setHelpOpen(false);
         setAviaryOpen(false);
+        setLeaderboardOpen(false);
         return;
       }
       if (e.key === "?") {
@@ -203,6 +215,10 @@ export function AppShell({ posts }: { posts: PostMeta[] }) {
         toggleAviary();
         return;
       }
+      if (key === "l") {
+        toggleLeaderboard();
+        return;
+      }
       if (key === "s") {
         setIdle(true);
         syscall("$ /sbin/screensaver --start");
@@ -210,9 +226,9 @@ export function AppShell({ posts }: { posts: PostMeta[] }) {
       }
 
       // Type-to-search: any single printable key opens cmdk with that char
-      if (!cmdOpen && !helpOpen && !aviaryOpen && e.key.length === 1 && /\S/.test(e.key) && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      if (!cmdOpen && !helpOpen && !aviaryOpen && !leaderboardOpen && e.key.length === 1 && /\S/.test(e.key) && !e.metaKey && !e.ctrlKey && !e.altKey) {
         // Skip the dedicated shortcut letters and `g` (handled above)
-        const reserved = new Set(["g", "j", "k", "r", "t", "b", "s", "?"]);
+        const reserved = new Set(["g", "j", "k", "r", "t", "b", "l", "s", "?"]);
         if (reserved.has(key)) return;
         e.preventDefault();
 
@@ -233,7 +249,7 @@ export function AppShell({ posts }: { posts: PostMeta[] }) {
       window.removeEventListener("keydown", onKey);
       if (gTimer) clearTimeout(gTimer);
     };
-  }, [toggleAviary, cmdOpen, helpOpen, aviaryOpen]);
+  }, [toggleAviary, toggleLeaderboard, cmdOpen, helpOpen, aviaryOpen, leaderboardOpen]);
 
   // Click syscalls — wired via event delegation
   useEffect(() => {
@@ -290,6 +306,7 @@ export function AppShell({ posts }: { posts: PostMeta[] }) {
         onCommandClick={openCmd}
         onHelpClick={openHelp}
         onAviaryClick={toggleAviary}
+        onLeaderboardClick={toggleLeaderboard}
       />
       <CustomCursor />
 
@@ -320,11 +337,13 @@ export function AppShell({ posts }: { posts: PostMeta[] }) {
         }}
         toggleTheme={cycleMode}
         toggleAviary={toggleAviary}
+        toggleLeaderboard={toggleLeaderboard}
         startScreensaver={startScreensaver}
       />
       <HelpOverlay open={helpOpen} onClose={() => setHelpOpen(false)} />
-      <Aviary open={aviaryOpen} />
-      <Screensaver active={idle && !cmdOpen && !helpOpen && !aviaryOpen} />
+      <Aviary open={aviaryOpen} onOpenLeaderboard={openLeaderboard} />
+      <LeaderboardOverlay open={leaderboardOpen} onClose={closeLeaderboard} />
+      <Screensaver active={idle && !cmdOpen && !helpOpen && !aviaryOpen && !leaderboardOpen} />
       <AwayOverlay />
     </>
   );

@@ -8,9 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "gray-matter": "^4.0.3",
     "next": "^15.3.0",
     "next-mdx-remote-client": "^2.1.10",
+    "obscenity": "^0.4.6",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "server-only": "^0.0.1"

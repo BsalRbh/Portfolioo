@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BirdSVG, BIRD_KINDS as KINDS, type BirdKind } from "@/lib/birds";
+import { LeaderboardList, type LeaderEntry } from "./LeaderboardList";
 
 type Bird = {
   id: number;
@@ -20,8 +21,13 @@ type Projectile = {
 
 const BIRD_HITBOX = 36;
 const MAX_MISSES = 10;
+const LEADERBOARD_SIZE = 50;
+const NAME_KEY = "aviary-name";
 
-type Props = { open: boolean };
+type Props = {
+  open: boolean;
+  onOpenLeaderboard?: () => void;
+};
 
 // Difficulty curves
 function spawnIntervalForScore(s: number): number {
@@ -34,12 +40,19 @@ function birdSpeedRangeForScore(s: number): [number, number] {
   return [80 + cap * 4, 220 + cap * 10];
 }
 
-export function Aviary({ open }: Props) {
+export function Aviary({ open, onOpenLeaderboard }: Props) {
   const [score, setScore] = useState(0);
   const [best, setBest] = useState(0);
   const [misses, setMisses] = useState(0);
   const [over, setOver] = useState(false);
   const [, setRenderTick] = useState(0);
+
+  const [board, setBoard] = useState<LeaderEntry[] | null>(null);
+  const [boardLoading, setBoardLoading] = useState(false);
+  const [boardError, setBoardError] = useState<string | null>(null);
+  const [nameInput, setNameInput] = useState("");
+  const [submittedId, setSubmittedId] = useState<number | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const birdsRef = useRef<Bird[]>([]);
   const projectilesRef = useRef<Projectile[]>([]);
@@ -60,6 +73,9 @@ export function Aviary({ open }: Props) {
     setScore(0);
     setMisses(0);
     setOver(false);
+    setBoard(null);
+    setBoardError(null);
+    setSubmittedId(null);
     birdsRef.current = [];
     projectilesRef.current = [];
     lastSpawn.current = performance.now();
@@ -70,6 +86,8 @@ export function Aviary({ open }: Props) {
     try {
       const b = parseInt(localStorage.getItem("aviary-best") || "0", 10);
       if (!Number.isNaN(b)) setBest(b);
+      const savedName = localStorage.getItem(NAME_KEY);
+      if (savedName) setNameInput(savedName);
     } catch {}
   }, []);
 
@@ -86,13 +104,88 @@ export function Aviary({ open }: Props) {
     }
   }, [score, best]);
 
+  useEffect(() => {
+    if (!over) return;
+    let cancelled = false;
+    setBoardLoading(true);
+    setBoardError(null);
+    fetch("/api/leaderboard", { cache: "no-store" })
+      .then((r) => {
+        if (!r.ok) throw new Error(String(r.status));
+        return r.json();
+      })
+      .then((data: { entries: LeaderEntry[] }) => {
+        if (cancelled) return;
+        setBoard(data.entries ?? []);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setBoardError("offline");
+      })
+      .finally(() => {
+        if (!cancelled) setBoardLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [over]);
+
+  const accuracy =
+    score + misses > 0 ? Math.round((score / (score + misses)) * 100) : 0;
+
+  const qualifies =
+    score > 0 &&
+    (board === null
+      ? false
+      : board.length < LEADERBOARD_SIZE ||
+        score > (board[board.length - 1]?.score ?? 0));
+
+  const submitScore = useCallback(async () => {
+    const name = nameInput.trim();
+    if (!/^[A-Za-z0-9 _.\-ऀ-ॿ]{3,12}$/.test(name)) {
+      setBoardError("bad_name");
+      return;
+    }
+    setSubmitting(true);
+    setBoardError(null);
+    try {
+      const res = await fetch("/api/leaderboard", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, score, accuracy }),
+      });
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        setBoardError(data.error ?? "submit_failed");
+        return;
+      }
+      const data = (await res.json()) as {
+        entry: LeaderEntry;
+        entries: LeaderEntry[];
+      };
+      setBoard(data.entries);
+      setSubmittedId(data.entry.id);
+      try {
+        localStorage.setItem(NAME_KEY, name);
+      } catch {}
+    } catch {
+      setBoardError("offline");
+    } finally {
+      setSubmitting(false);
+    }
+  }, [nameInput, score, accuracy]);
+
   // Click: hit-test, count misses, end game when misses reach the cap
   useEffect(() => {
     if (!open) return;
     const onClick = (e: MouseEvent) => {
       if (overRef.current) return;
       const t = e.target as HTMLElement | null;
-      if (t?.closest(".aviary-score, .aviary-over, .pill, .theme-toggle, .cmdk, .help-card, .post-reader"))
+      if (
+        t?.closest(
+          ".aviary-score, .aviary-over, .pill, .theme-toggle, .cmdk, .help-card, .post-reader, .leaderboard-shroud, .leaderboard-card, .aviary-link"
+        )
+      )
         return;
 
       const cx = e.clientX;
@@ -142,6 +235,21 @@ export function Aviary({ open }: Props) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, over, resetGame]);
+
+  // L during gameplay opens the standalone leaderboard
+  useEffect(() => {
+    if (!open || !onOpenLeaderboard) return;
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      if (e.key.toLowerCase() === "l") {
+        e.preventDefault();
+        onOpenLeaderboard();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onOpenLeaderboard]);
 
   // Game loop
   useEffect(() => {
@@ -233,6 +341,18 @@ export function Aviary({ open }: Props) {
         <span className="ammo">
           LIVES · <span className="ammo-bar">{missBar}</span> {missesLeft}/{MAX_MISSES}
         </span>
+        {onOpenLeaderboard && (
+          <button
+            type="button"
+            className="aviary-link"
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenLeaderboard();
+            }}
+          >
+            L · BOARD
+          </button>
+        )}
         <span className="hint">[ B / ESC to close ]</span>
       </div>
       <div className="aviary-layer" aria-hidden>
@@ -275,11 +395,68 @@ export function Aviary({ open }: Props) {
               </div>
               <div className="row">
                 <span className="k">accuracy</span>
-                <span className="v">
-                  {score + misses > 0 ? Math.round((score / (score + misses)) * 100) : 0}%
-                </span>
+                <span className="v">{accuracy}%</span>
               </div>
             </div>
+
+            <div className="aviary-board">
+              <div className="aviary-board-head">
+                <span className="lbl">TOP {LEADERBOARD_SIZE}</span>
+                {boardLoading && <span className="hint">loading…</span>}
+                {boardError === "offline" && (
+                  <span className="hint err">offline · score not recorded</span>
+                )}
+              </div>
+
+              {qualifies && submittedId === null && (
+                <form
+                  className="aviary-board-submit"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!submitting) submitScore();
+                  }}
+                >
+                  <span className="hint">you made the board · enter a name</span>
+                  <div className="aviary-board-submit-row">
+                    <input
+                      type="text"
+                      className="aviary-name-input"
+                      value={nameInput}
+                      onChange={(e) => setNameInput(e.target.value)}
+                      maxLength={12}
+                      minLength={3}
+                      pattern="[A-Za-z0-9 _.\-ऀ-ॿ]{3,12}"
+                      placeholder="3–12 chars"
+                      autoFocus
+                      disabled={submitting}
+                    />
+                    <button
+                      type="submit"
+                      className="pill"
+                      disabled={submitting || nameInput.trim().length < 3}
+                    >
+                      {submitting ? "…" : "SUBMIT"}
+                    </button>
+                  </div>
+                  {boardError && boardError !== "offline" && (
+                    <span className="hint err">
+                      {boardError === "bad_name"
+                        ? "name must be 3–12 chars: letters (roman / देवनागरी), digits, space, _ . -"
+                        : boardError === "rate_limited"
+                          ? "slow down — try again in a minute"
+                          : "couldn’t submit — try again"}
+                    </span>
+                  )}
+                </form>
+              )}
+
+              <LeaderboardList
+                entries={board}
+                loading={boardLoading}
+                highlightId={submittedId}
+              />
+            </div>
+
             <div className="aviary-over-actions">
               <button type="button" className="pill" onClick={resetGame}>
                 R · RESTART

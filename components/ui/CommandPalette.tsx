@@ -8,10 +8,11 @@ type Props = {
   onClose: () => void;
   toggleTheme: () => void;
   toggleAviary: () => void;
+  toggleLeaderboard: () => void;
   startScreensaver: () => void;
 };
 
-export function CommandPalette({ open, seed, onClose, toggleTheme, toggleAviary, startScreensaver }: Props) {
+export function CommandPalette({ open, seed, onClose, toggleTheme, toggleAviary, toggleLeaderboard, startScreensaver }: Props) {
   const [q, setQ] = useState("");
   const [i, setI] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -58,6 +59,8 @@ export function CommandPalette({ open, seed, onClose, toggleTheme, toggleAviary,
       toggleTheme();
     } else if (cmd.id === "act:aviary") {
       toggleAviary();
+    } else if (cmd.id === "act:leaderboard") {
+      toggleLeaderboard();
     } else if (cmd.id === "act:screensaver") {
       startScreensaver();
     }

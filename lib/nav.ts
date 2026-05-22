@@ -29,5 +29,6 @@ export const COMMANDS: Command[] = [
   { id: "act:reset", label: "Reset project layout", hint: "↵" },
   { id: "act:theme", label: "Cycle theme (dark / light / crt / newspaper / blueprint / neon)", hint: "t" },
   { id: "act:aviary", label: "Toggle aviary (shoot the birds)", hint: "b" },
+  { id: "act:leaderboard", label: "View aviary leaderboard", hint: "l" },
   { id: "act:screensaver", label: "Start screensaver", hint: "s" },
 ];

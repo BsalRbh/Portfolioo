@@ -269,6 +269,11 @@
   dependencies:
     "@tybys/wasm-util" "^0.10.1"
 
+"@neondatabase/serverless@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@neondatabase/serverless/-/serverless-1.1.0.tgz#35046d1125932153dd306bd3d7c269306914e005"
+  integrity sha512-r3ZZhRjEcfEdKIZnoB1RusNgvHuaBRqfCzV4Gi+5A9yUX0S4HTws/ASWqt13wL4y4I+0rqsWGdA2w7EQXHi3+Q==
+
 "@next/env@15.5.18":
   version "15.5.18"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-15.5.18.tgz#207ab150d3f1c787ac343946155392d478506c1b"
@@ -1390,6 +1395,11 @@ non-error@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/non-error/-/non-error-0.1.0.tgz#b78b7d9a67ccb03ac979f9758813336ca7521cf2"
   integrity sha512-TMB1uHiGsHRGv1uYclfhivcnf0/PdFp2pNqRxXjncaAsjYMoisaQJI+SSZCqRq+VliwRTC8tsMQfmrWjDMhkPQ==
+
+obscenity@^0.4.6:
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/obscenity/-/obscenity-0.4.6.tgz#827bcbe47255594e7cfa96aeba1b960439390949"
+  integrity sha512-pHk7kNN7j3L3zGhhGnwxjvXIGsPpLrcZl2r58fqWh/V/rH6b/dafscj2sMmAY+A/9/wPsocLmimgGk2DKeKsFQ==
 
 parse-entities@^4.0.0:
   version "4.0.2"
