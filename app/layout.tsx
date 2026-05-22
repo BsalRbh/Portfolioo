@@ -80,6 +80,9 @@ const themeInitScript = `
   try {
     var t = localStorage.getItem('theme');
     if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    if (sessionStorage.getItem('boot-played') || location.hash === '#writing') {
+      document.documentElement.setAttribute('data-boot-skip', '1');
+    }
   } catch (e) {}
 })();
 `;

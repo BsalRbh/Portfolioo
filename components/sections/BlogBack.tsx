@@ -3,6 +3,10 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+function skipBoot() {
+  document.documentElement.setAttribute("data-boot-skip", "1");
+}
+
 export function BlogBack() {
   const router = useRouter();
 
@@ -10,6 +14,7 @@ export function BlogBack() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
+        skipBoot();
         router.push("/#writing");
       }
     };
@@ -18,7 +23,12 @@ export function BlogBack() {
   }, [router]);
 
   return (
-    <Link href="/#writing" className="post-close blog-back" aria-label="Close">
+    <Link
+      href="/#writing"
+      onClick={skipBoot}
+      className="post-close blog-back"
+      aria-label="Close"
+    >
       ✕ ESC
     </Link>
   );

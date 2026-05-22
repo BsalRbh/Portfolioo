@@ -1,28 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
-
-const BOOT_KEY = "boot-played";
+import { useEffect } from "react";
 
 export function BootOverlay() {
-  const [gone, setGone] = useState(true);
-
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (typeof document === "undefined") return;
+    if (document.documentElement.hasAttribute("data-boot-skip")) return;
     try {
-      if (sessionStorage.getItem(BOOT_KEY)) return;
+      sessionStorage.setItem("boot-played", "1");
     } catch {}
-    setGone(false);
-    const t = setTimeout(() => {
-      setGone(true);
-      try {
-        sessionStorage.setItem(BOOT_KEY, "1");
-      } catch {}
-    }, 3400);
-    return () => clearTimeout(t);
   }, []);
-
-  if (gone) return null;
 
   return (
     <div className="boot" aria-hidden>

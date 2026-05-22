@@ -1016,6 +1016,7 @@ footer.site-footer .big {
   animation: boot-out 600ms ease 2.6s forwards;
   pointer-events: none;
 }
+:root[data-boot-skip] .boot { display: none; }
 .boot .line { opacity: 0; animation: boot-line 200ms ease forwards; }
 .boot .line:nth-child(1) { animation-delay: 0ms; }
 .boot .line:nth-child(2) { animation-delay: 180ms; }
