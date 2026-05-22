@@ -5,34 +5,34 @@ import { SectionIdx } from "@/components/chrome/SectionIdx";
 const STEPS = [
   {
     n: "01",
-    title: "Listen, then sketch.",
+    title: "Write the problem down first.",
     body:
-      "Every project starts as a one-page memo. If I can't write it in plain English, the architecture isn't ready yet.",
+      "I start every feature as a short note in plain English — what's broken, what should happen, what's unclear. Half the time it surfaces a question I haven't answered yet.",
     glyph: "  •\n /│\\\n• │ •\n  │\n  •",
   },
   {
     n: "02",
-    title: "Build the smallest thing.",
+    title: "Get the thinnest version working.",
     body:
-      "I keep a 'walking skeleton' on day one — end-to-end, ugly, working. Everything after is replacing parts of it.",
+      "I'd rather have an ugly end-to-end path on day one than a polished half. The rough version tells me which pieces I actually understand.",
     glyph: " ┌─┐\n │░│\n └┬┘\n  │\n  ▼",
   },
   {
     n: "03",
-    title: "Watch it under load.",
-    body: "Production tells you what staging never will. I instrument before I optimize, every time.",
+    title: "Watch what it actually does.",
+    body: "Before I tune anything, I add logs and click through it like a user. Most of my early bugs came from optimizing the wrong thing.",
     glyph: "▁▂▃▅▇█\n▔▔▔▔▔▔\n  ◢▆◣\n ◢███◣",
   },
   {
     n: "04",
-    title: "Write it down.",
-    body: "Every change ships with a note in the repo. Future me, or the next engineer, doesn't have to guess.",
+    title: "Leave a trail.",
+    body: "Commit messages, a short note in the PR, sometimes a comment on the weird line. Mostly so the next-week version of me doesn't have to relearn it.",
     glyph: "┌────┐\n│ ✎  │\n└────┘\n  ──→",
   },
   {
     n: "05",
-    title: "Hand it back, smaller.",
-    body: "The best engagement ends with less surface area than it started with. Boring is the goal.",
+    title: "Cut what I don't use.",
+    body: "At the end of a feature I look for code I added 'just in case' and delete it. Less surface area, fewer places to be wrong.",
     glyph: " ███\n  █\n  •\n     ",
   },
 ];

@@ -19,10 +19,60 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
+const SITE_URL = "https://bishalrajbahak.com.np";
+const SITE_NAME = "Bishal Rajbahak — Portfolio";
+const SITE_DESCRIPTION =
+  "Bishal Rajbahak — full-stack developer (React/Next · Go), based in Kathmandu,Nepal.";
+
 export const metadata: Metadata = {
-  title: "BISHAL RAJBAHAK — Portfolio",
-  description:
-    "Bishal Rajbahak — full-stack developer (React/Next · Go), based in Kathmandu. Currently shipping at One Accord.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "BISHAL RAJBAHAK — Portfolio",
+    template: "%s — Bishal Rajbahak",
+  },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
+  authors: [{ name: "Bishal Rajbahak", url: SITE_URL }],
+  creator: "Bishal Rajbahak",
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: "BISHAL RAJBAHAK — Portfolio",
+    description: SITE_DESCRIPTION,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BISHAL RAJBAHAK — Portfolio",
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Bishal Rajbahak",
+  url: SITE_URL,
+  jobTitle: "Full-Stack Developer",
+  worksFor: { "@type": "Organization", name: "One Accord" },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Kathmandu",
+    addressCountry: "NP",
+  },
+  knowsAbout: [
+    "React",
+    "Next.js",
+    "Go",
+    "TypeScript",
+    "Full-Stack Development",
+  ],
 };
 
 const themeInitScript = `
@@ -44,7 +94,11 @@ const clarityScript = `
 })(window, document, "clarity", "script", "wumsxgno1q");
 `;
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className={`${serif.variable} ${mono.variable}`}>
       <head>
@@ -52,6 +106,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         {clarityEnabled && (
           <Script
             id="ms-clarity"

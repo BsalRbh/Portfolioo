@@ -1,22 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
-import { POSTS } from "@/lib/posts";
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import type { PostMeta } from "@/lib/posts.types";
 import { SectionIdx } from "@/components/chrome/SectionIdx";
 
-export function Writing() {
+export function Writing({ posts: POSTS }: { posts: PostMeta[] }) {
   const [top, setTop] = useState(0);
-  const [openPost, setOpenPost] = useState<number | null>(null);
+  const router = useRouter();
 
   const cycle = () => setTop((t) => (t + 1) % POSTS.length);
-
-  useEffect(() => {
-    if (openPost == null) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpenPost(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [openPost]);
 
   return (
     <section id="writing" className="section">
@@ -33,7 +26,7 @@ export function Writing() {
             const rot = offset === 0 ? 0 : (offset % 2 === 0 ? 1.2 : -1.4) * offset;
             return (
               <div
-                key={p.title}
+                key={p.slug}
                 className={"write-card" + (offset === 0 ? " top" : "")}
                 style={{
                   transform: `translate(${x}px, ${y}px) rotate(${rot}deg)`,
@@ -42,21 +35,23 @@ export function Writing() {
                 }}
               >
                 <div className="meta">
-                  {p.date} · {p.reading}
+                  <time dateTime={p.date}>{p.dateDisplay}</time> · {p.reading}
                 </div>
                 <h4>{p.title}</h4>
                 <p>{p.excerpt}</p>
-                <button
+                <Link
+                  href={`/blogs/${p.slug}`}
                   className="read"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setOpenPost(i);
+                  onClick={(e) => e.stopPropagation()}
+                  aria-disabled={offset !== 0}
+                  tabIndex={offset === 0 ? 0 : -1}
+                  style={{
+                    pointerEvents: offset === 0 ? "auto" : "none",
+                    opacity: offset === 0 ? 1 : 0.35,
                   }}
-                  disabled={offset !== 0}
-                  style={{ pointerEvents: offset === 0 ? "auto" : "none" }}
                 >
                   → READ POST
-                </button>
+                </Link>
               </div>
             );
           })}
@@ -66,11 +61,13 @@ export function Writing() {
             {POSTS.map((p, i) => (
               <div
                 className="row"
-                key={p.title}
+                key={p.slug}
                 style={{ color: i === top ? "var(--accent)" : undefined, cursor: "none" }}
-                onClick={() => setOpenPost(i)}
+                onClick={() => router.push(`/blogs/${p.slug}`)}
               >
-                <span className="k">{p.date}</span>
+                <span className="k">
+                  <time dateTime={p.date}>{p.dateDisplay}</time>
+                </span>
                 <span className="v" style={{ color: i === top ? "var(--accent)" : undefined }}>
                   {p.title}
                 </span>
@@ -78,37 +75,10 @@ export function Writing() {
             ))}
           </div>
           <p style={{ marginTop: 24, fontSize: 12, color: "var(--paper-dim)", lineHeight: 1.6 }}>
-            Short essays, mostly about React, the unglamorous middle of a career change, and the small UX details that
-            take longer than they should. Roughly monthly.
+            Short essays on building software, learning in public, and the lessons that take longer than they should.
           </p>
         </div>
       </div>
-      {openPost != null && (
-        <div className="post-shroud" onClick={() => setOpenPost(null)}>
-          <article className="post-reader" onClick={(e) => e.stopPropagation()}>
-            <header className="post-head">
-              <div className="post-meta">
-                {POSTS[openPost].date} · {POSTS[openPost].reading} · ESSAY
-              </div>
-              <button className="post-close" onClick={() => setOpenPost(null)} aria-label="Close">
-                ✕ ESC
-              </button>
-            </header>
-            <h2 className="post-title">{POSTS[openPost].title}</h2>
-            <div className="post-body">
-              {POSTS[openPost].body.map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
-            </div>
-            <footer className="post-foot">
-              <span>bishal rajbahak · {POSTS[openPost].date.toLowerCase()}</span>
-              <span>
-                {openPost + 1} / {POSTS.length}
-              </span>
-            </footer>
-          </article>
-        </div>
-      )}
     </section>
   );
 }

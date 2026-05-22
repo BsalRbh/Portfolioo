@@ -1,0 +1,50 @@
+---
+title: "Lessons from Debugging a Stubborn Bug"
+date: "2026-03-18"
+reading: "07 MIN"
+excerpt: "A story about a bug that took time to understand, how I tracked it down, and what it taught me about debugging."
+---
+
+Some bugs are easy to fix. Others stay hidden long enough to test your patience, your assumptions, and your debugging process. This is the story of one of those bugs, and what it taught me.
+
+## The bug
+
+At first, the problem looked small. Something in the application was not behaving the way I expected, but there was no clear error telling me what was wrong. The app still worked in some places, which made the issue even more confusing.
+
+That is what made it stubborn. It did not break everything at once. It only failed in certain situations, which made it harder to trace.
+
+## What I tried first
+
+My first instinct was to fix the most obvious part of the code. I checked the component, the API response, and the data flow, hoping the problem would be there. But each fix only solved part of the issue or changed nothing at all.
+
+That taught me an important lesson: the first thing that looks wrong is not always the real cause of the bug.
+
+## Finding the real cause
+
+Once I slowed down, I started looking at the problem step by step. I checked inputs, outputs, state changes, and how data moved through the application. I also paid more attention to logs and small differences between what I expected and what was actually happening.
+
+Eventually, I found that the bug was not where I first thought it was. It was caused by a smaller detail in the flow that I had overlooked. That made the fix simple, but only after I understood the real source of the issue.
+
+## What I learned
+
+The biggest lesson was that debugging is a skill, not just a task. It is easy to jump to conclusions when something is broken, but real progress comes from slowing down and understanding the system.
+
+I also learned that stubborn bugs often reveal weak spots in how I think about the code. They show me where I made assumptions, where I skipped steps, and where I need better structure or better logging.
+
+## How I approach bugs now
+
+Now, when I face a difficult bug, I try to:
+
+- reproduce the issue clearly.
+- isolate the smallest failing part.
+- check logs and state changes carefully.
+- avoid guessing too early.
+- fix the root cause instead of the symptom.
+
+That approach saves time and frustration, and it usually leads me to a better solution.
+
+## Closing thoughts
+
+This bug was annoying while I was solving it, but it became one of the most useful things I learned from. It reminded me that good developers are not the ones who never get stuck. They are the ones who know how to keep going until they understand the problem.
+
+Every stubborn bug teaches something. This one taught me patience, structure, and the value of careful debugging.

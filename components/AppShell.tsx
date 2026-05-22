@@ -22,12 +22,13 @@ import { Resume } from "./sections/Resume";
 import { Now } from "./sections/Now";
 import { Contact } from "./sections/Contact";
 import { Footer } from "./sections/Footer";
+import type { PostMeta } from "@/lib/posts.types";
 
 function syscall(line: string) {
   window.dispatchEvent(new CustomEvent("portfolio-syscall", { detail: line }));
 }
 
-export function AppShell() {
+export function AppShell({ posts }: { posts: PostMeta[] }) {
   const [cmdOpen, setCmdOpen] = useState(false);
   const [cmdSeed, setCmdSeed] = useState<string>("");
   const [helpOpen, setHelpOpen] = useState(false);
@@ -296,7 +297,7 @@ export function AppShell() {
       <WorkCanvas />
       <About />
       <Process />
-      <Writing />
+      <Writing posts={posts} />
       <Resume />
       <Now />
       <Contact />

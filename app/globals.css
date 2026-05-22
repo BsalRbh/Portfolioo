@@ -511,6 +511,12 @@ body::before {
   padding: 8vh 20px 6vh; overflow-y: auto;
   animation: post-in 220ms ease;
 }
+.post-shroud--page {
+  position: static; min-height: 100vh;
+  backdrop-filter: none;
+}
+.blog-page, .blog-page * { cursor: auto !important; }
+.blog-page a, .blog-page button { cursor: pointer !important; }
 @keyframes post-in { from { opacity: 0 } to { opacity: 1 } }
 .post-reader {
   width: min(760px, 100%);
@@ -546,6 +552,20 @@ body::before {
   font-size: 3.2em; float: left; line-height: 0.9;
   padding: 6px 10px 0 0; color: #0b0b0d; font-weight: 600;
 }
+.post-body h1, .post-body h2, .post-body h3, .post-body h4 {
+  font-family: var(--serif); color: #0b0b0d;
+  letter-spacing: -0.01em; text-wrap: balance;
+  font-weight: 600; font-style: italic; line-height: 1.2;
+}
+.post-body h1 { font-size: 22px; margin: 28px 0 12px; }
+.post-body h2 { font-size: 20px; margin: 24px 0 10px; }
+.post-body h3 { font-size: 18px; margin: 20px 0 8px; }
+.post-body h4 { font-size: 17px; margin: 18px 0 8px; }
+.post-body ul, .post-body ol {
+  font-size: 17px; line-height: 1.62; color: #2a2724;
+  margin: 0 0 16px 1.4em; max-width: 64ch;
+}
+.post-body li { margin-bottom: 6px; }
 .post-foot {
   margin-top: 30px; padding-top: 18px; border-top: 1px solid #d8d2c4;
   display: flex; justify-content: space-between;

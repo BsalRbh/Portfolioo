@@ -1,0 +1,40 @@
+---
+title: "A Lesson I Learned from Building Authentication in Go"
+date: "2025-08-12"
+reading: "07 MIN"
+excerpt: "A short story about debugging, authentication, and what I learned while building a secure backend."
+---
+
+Building authentication in a backend project taught me that security is not just about making login work. It is about making the system reliable, safe, and easy to maintain as the application grows.
+
+## What I was building
+
+I was working on a backend in Go with a login flow for users. The goal was to create a secure authentication system that could issue a token after successful login and protect private routes after that.
+
+At first, the implementation looked fine on the surface. Users could log in, tokens were being created, and protected endpoints seemed to work in testing. But once I started trying real cases, I began seeing problems that were not obvious in the happy path.
+
+## The problem I hit
+
+The biggest issue was not one dramatic crash. It was a series of small mistakes that made the system less dependable than I expected.
+
+I had to think carefully about how credentials were checked, how login failures were handled, and how I would avoid exposing sensitive information. I also learned that debugging authentication requires patience because the issue is not always in the login handler itself. Sometimes the problem is in the middleware, the token validation logic, or the way the client sends the request.
+
+## What I changed
+
+The first thing I improved was how I approached debugging. Instead of guessing, I started narrowing the problem step by step, checking inputs, inspecting logs, and isolating the part of the flow that was failing.
+
+I also paid more attention to security basics. Authentication should happen over HTTPS, passwords should never be handled casually, and protected routes should be guarded through middleware instead of scattered checks everywhere. Once I treated those as requirements instead of nice-to-haves, the code became more trustworthy.
+
+Finally, I tried to make the structure more maintainable. I separated login logic, token handling, and authorization checks so each part had one clear responsibility. That made the backend easier to read and easier to update later.
+
+## What I learned
+
+The main lesson was that authentication is both a technical and security problem. A feature can look complete in testing and still be fragile if the implementation is not carefully designed.
+
+I also learned that debugging becomes much easier when I stop treating bugs as random failures. A structured approach, good logging, and small testable steps save time and reduce frustration. That mindset has helped me not just with authentication, but with backend development in general.
+
+## What I’d do next
+
+If I build another authentication system, I would start with a clearer plan for security, testing, and error handling from the beginning. I would also review password handling, token expiration, and route protection earlier instead of adding them at the end.
+
+For me, this experience was a reminder that backend development is about details. The code has to work, but it also has to be built in a way that can be trusted.

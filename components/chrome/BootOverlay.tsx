@@ -1,15 +1,24 @@
 "use client";
 import { useEffect, useState } from "react";
 
+const BOOT_KEY = "boot-played";
+
 export function BootOverlay() {
-  const [gone, setGone] = useState(false);
+  const [gone, setGone] = useState(true);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    try {
+      if (sessionStorage.getItem(BOOT_KEY)) return;
+    } catch {}
+    setGone(false);
+    const t = setTimeout(() => {
       setGone(true);
-      return;
-    }
-    const t = setTimeout(() => setGone(true), 3400);
+      try {
+        sessionStorage.setItem(BOOT_KEY, "1");
+      } catch {}
+    }, 3400);
     return () => clearTimeout(t);
   }, []);
 
