@@ -929,6 +929,34 @@ footer.site-footer .big {
   box-shadow: 0 0 8px var(--accent);
   transform: translate(-50%, -50%);
 }
+.aviary-miss-fx {
+  position: fixed; inset: 0; z-index: 75;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(220, 38, 38, 0.35) 100%);
+  animation: aviary-miss-flash 220ms ease-out forwards;
+}
+.aviary-miss-fx.hidden { display: none; }
+@keyframes aviary-miss-flash {
+  0%   { opacity: 0; }
+  20%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.aviary-layer {
+  animation: none;
+}
+.aviary-miss-fx ~ .aviary-layer {
+  animation: aviary-miss-shake 180ms ease-in-out;
+}
+@keyframes aviary-miss-shake {
+  0%, 100% { transform: translate(0, 0); }
+  20%      { transform: translate(-4px, 2px); }
+  40%      { transform: translate(4px, -2px); }
+  60%      { transform: translate(-3px, -1px); }
+  80%      { transform: translate(3px, 1px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aviary-miss-fx ~ .aviary-layer { animation: none; }
+}
 .aviary-score {
   position: fixed; top: 56px; right: 24px;
   z-index: 80;
@@ -950,6 +978,54 @@ footer.site-footer .big {
   letter-spacing: 0;
   color: var(--accent);
   font-size: 9px;
+}
+
+/* Countdown */
+.aviary-countdown {
+  position: fixed; inset: 0; z-index: 90;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  background: rgba(11, 11, 13, 0.45);
+}
+.aviary-countdown-card {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  padding: 28px 44px;
+  background: var(--ink);
+  border: 1px solid var(--accent);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  text-align: center;
+}
+.aviary-countdown-card .lbl {
+  color: var(--accent);
+  font-size: 11px;
+}
+.aviary-countdown-card .hint {
+  color: var(--paper-dim);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+.aviary-countdown-num {
+  color: var(--paper);
+  font-size: 88px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0;
+  animation: aviary-countdown-pop 600ms ease-out;
+}
+.aviary-countdown-num.go {
+  color: var(--accent);
+  font-size: 56px;
+  letter-spacing: 0.1em;
+}
+@keyframes aviary-countdown-pop {
+  0%   { transform: scale(0.6); opacity: 0; }
+  30%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aviary-countdown-num { animation: none; }
 }
 
 /* Game over */

@@ -20,7 +20,7 @@ type Projectile = {
 };
 
 const BIRD_HITBOX = 36;
-const MAX_MISSES = 10;
+const MAX_MISSES = 4;
 const LEADERBOARD_SIZE = 50;
 const NAME_KEY = "aviary-name";
 
@@ -45,6 +45,8 @@ export function Aviary({ open, onOpenLeaderboard }: Props) {
   const [best, setBest] = useState(0);
   const [misses, setMisses] = useState(0);
   const [over, setOver] = useState(false);
+  const [missFlash, setMissFlash] = useState(0);
+  const [countdown, setCountdown] = useState<number | null>(3);
   const [, setRenderTick] = useState(0);
 
   const [board, setBoard] = useState<LeaderEntry[] | null>(null);
@@ -65,9 +67,11 @@ export function Aviary({ open, onOpenLeaderboard }: Props) {
   const scoreRef = useRef(score);
   const missesRef = useRef(misses);
   const overRef = useRef(over);
+  const countdownRef = useRef(countdown);
   scoreRef.current = score;
   missesRef.current = misses;
   overRef.current = over;
+  countdownRef.current = countdown;
 
   const resetGame = useCallback(() => {
     setScore(0);
@@ -76,6 +80,7 @@ export function Aviary({ open, onOpenLeaderboard }: Props) {
     setBoard(null);
     setBoardError(null);
     setSubmittedId(null);
+    setCountdown(3);
     birdsRef.current = [];
     projectilesRef.current = [];
     lastSpawn.current = performance.now();
@@ -94,6 +99,17 @@ export function Aviary({ open, onOpenLeaderboard }: Props) {
   useEffect(() => {
     if (open) resetGame();
   }, [open, resetGame]);
+
+  // Countdown tick: 3 → 2 → 1 → 0 (GO!) → null (live)
+  useEffect(() => {
+    if (!open || countdown === null) return;
+    const ms = countdown === 0 ? 500 : 800;
+    const id = window.setTimeout(() => {
+      setCountdown((c) => (c === null ? null : c === 0 ? null : c - 1));
+      if (countdown === null || countdown > 0) return;
+    }, ms);
+    return () => window.clearTimeout(id);
+  }, [open, countdown]);
 
   useEffect(() => {
     if (score > best) {
@@ -180,10 +196,11 @@ export function Aviary({ open, onOpenLeaderboard }: Props) {
     if (!open) return;
     const onClick = (e: MouseEvent) => {
       if (overRef.current) return;
+      if (countdownRef.current !== null) return;
       const t = e.target as HTMLElement | null;
       if (
         t?.closest(
-          ".aviary-score, .aviary-over, .pill, .theme-toggle, .cmdk, .help-card, .post-reader, .leaderboard-shroud, .leaderboard-card, .aviary-link"
+          ".aviary-score, .aviary-over, .pill, .theme-toggle, .cmdk, .help-card, .post-reader, .leaderboard-shroud, .leaderboard-card, .aviary-link",
         )
       )
         return;
@@ -216,6 +233,7 @@ export function Aviary({ open, onOpenLeaderboard }: Props) {
       } else {
         const newMisses = missesRef.current + 1;
         setMisses(newMisses);
+        setMissFlash((n) => n + 1);
         if (newMisses >= MAX_MISSES) setOver(true);
       }
     };
@@ -262,8 +280,8 @@ export function Aviary({ open, onOpenLeaderboard }: Props) {
       const dt = Math.min(64, now - lastFrame.current) / 1000;
       lastFrame.current = now;
 
-      // Spawn only while game is live
-      if (!overRef.current) {
+      // Spawn only while game is live (and countdown finished)
+      if (!overRef.current && countdownRef.current === null) {
         const interval = spawnIntervalForScore(scoreRef.current);
         if (now - lastSpawn.current > interval) {
           lastSpawn.current = now;
@@ -339,7 +357,8 @@ export function Aviary({ open, onOpenLeaderboard }: Props) {
         <span>SCORE · {String(score).padStart(3, "0")}</span>
         <span className="dim">BEST · {String(best).padStart(3, "0")}</span>
         <span className="ammo">
-          LIVES · <span className="ammo-bar">{missBar}</span> {missesLeft}/{MAX_MISSES}
+          LIVES · <span className="ammo-bar">{missBar}</span> {missesLeft}/
+          {MAX_MISSES}
         </span>
         {onOpenLeaderboard && (
           <button
@@ -355,13 +374,20 @@ export function Aviary({ open, onOpenLeaderboard }: Props) {
         )}
         <span className="hint">[ B / ESC to close ]</span>
       </div>
+      <div
+        key={missFlash}
+        className={missFlash > 0 ? "aviary-miss-fx" : "aviary-miss-fx hidden"}
+        aria-hidden
+      />
       <div className="aviary-layer" aria-hidden>
         {birdsRef.current.map((b) => {
           const facingLeft = b.vx < 0;
           return (
             <span
               key={b.id}
-              className={`aviary-bird aviary-bird-${b.kind}` + (b.dead ? " dead" : "")}
+              className={
+                `aviary-bird aviary-bird-${b.kind}` + (b.dead ? " dead" : "")
+              }
               style={{ transform: `translate(${b.x}px, ${b.y}px)` }}
             >
               {b.dead ? (
@@ -380,6 +406,25 @@ export function Aviary({ open, onOpenLeaderboard }: Props) {
       </div>
       <div className="aviary-shots" ref={projectileLayerRef} aria-hidden />
 
+      {countdown !== null && (
+        <div className="aviary-countdown" aria-live="assertive">
+          <div className="aviary-countdown-card">
+            <div className="lbl">— AVIARY</div>
+            <div
+              key={countdown}
+              className={
+                "aviary-countdown-num" + (countdown === 0 ? " go" : "")
+              }
+            >
+              {countdown === 0 ? "GO!" : countdown}
+            </div>
+            <div className="hint">
+              click birds · {MAX_MISSES} lives · B / ESC to exit
+            </div>
+          </div>
+        </div>
+      )}
+
       {over && (
         <div className="aviary-over" role="dialog" aria-label="Game over">
           <div className="aviary-over-card">
@@ -387,7 +432,9 @@ export function Aviary({ open, onOpenLeaderboard }: Props) {
             <div className="aviary-over-stats">
               <div className="row">
                 <span className="k">final score</span>
-                <span className="v accent">{String(score).padStart(3, "0")}</span>
+                <span className="v accent">
+                  {String(score).padStart(3, "0")}
+                </span>
               </div>
               <div className="row">
                 <span className="k">best</span>
@@ -416,7 +463,9 @@ export function Aviary({ open, onOpenLeaderboard }: Props) {
                     if (!submitting) submitScore();
                   }}
                 >
-                  <span className="hint">you made the board · enter a name</span>
+                  <span className="hint">
+                    you made the board · enter a name
+                  </span>
                   <div className="aviary-board-submit-row">
                     <input
                       type="text"
