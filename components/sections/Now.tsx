@@ -18,7 +18,7 @@ export function Now() {
   return (
     <section id="now" className="section">
       <div className="section-label">
-        <SectionIdx value="07 / 08" />
+        <SectionIdx value="08 / 09" />
         <span>Now — what I&apos;m doing this week</span>
       </div>
       <div className="now-board">

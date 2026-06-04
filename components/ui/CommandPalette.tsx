@@ -63,6 +63,8 @@ export function CommandPalette({ open, seed, onClose, toggleTheme, toggleAviary,
       toggleLeaderboard();
     } else if (cmd.id === "act:screensaver") {
       startScreensaver();
+    } else if (cmd.id === "act:tools") {
+      window.location.href = "/tools";
     }
     onClose();
   };

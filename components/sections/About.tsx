@@ -4,7 +4,7 @@ export function About() {
   return (
     <section id="about" className="section">
       <div className="section-label">
-        <SectionIdx value="03 / 08" />
+        <SectionIdx value="03 / 09" />
         <span>About</span>
       </div>
       <div className="two-col">

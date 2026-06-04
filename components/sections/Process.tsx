@@ -66,7 +66,7 @@ export function Process() {
   return (
     <section id="process" className="section">
       <div className="section-label">
-        <SectionIdx value="04 / 08" />
+        <SectionIdx value="04 / 09" />
         <span>Process — five steps, repeated forever →</span>
       </div>
       <div className="process-rail" ref={railRef} onMouseDown={onMouseDown}>

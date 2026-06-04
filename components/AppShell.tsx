@@ -19,6 +19,7 @@ import { WorkCanvas } from "./sections/WorkCanvas";
 import { About } from "./sections/About";
 import { Process } from "./sections/Process";
 import { Writing } from "./sections/Writing";
+import { Tools } from "./sections/Tools";
 import { Resume } from "./sections/Resume";
 import { Now } from "./sections/Now";
 import { Contact } from "./sections/Contact";
@@ -315,6 +316,7 @@ export function AppShell({ posts }: { posts: PostMeta[] }) {
       <About />
       <Process />
       <Writing posts={posts} />
+      <Tools />
       <Resume />
       <Now />
       <Contact />

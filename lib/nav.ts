@@ -6,6 +6,7 @@ export const NAV: NavEntry[] = [
   { key: "a", label: "About", id: "about" },
   { key: "p", label: "Process", id: "process" },
   { key: "r", label: "Writing", id: "writing" },
+  { key: "o", label: "Tools", id: "tools" },
   { key: "c", label: "CV", id: "cv" },
   { key: "n", label: "Now", id: "now" },
   { key: "x", label: "Contact", id: "contact" },
@@ -19,6 +20,7 @@ export const COMMANDS: Command[] = [
   { id: "goto:about", label: "Go to About", hint: "g a" },
   { id: "goto:process", label: "Go to Process", hint: "g p" },
   { id: "goto:writing", label: "Go to Writing", hint: "g r" },
+  { id: "goto:tools", label: "Go to Tools", hint: "g o" },
   { id: "goto:cv", label: "Go to CV", hint: "g c" },
   { id: "goto:now", label: "Go to Now", hint: "g n" },
   { id: "goto:contact", label: "Go to Contact", hint: "g x" },
@@ -31,4 +33,5 @@ export const COMMANDS: Command[] = [
   { id: "act:aviary", label: "Toggle aviary (shoot the birds)", hint: "b" },
   { id: "act:leaderboard", label: "View aviary leaderboard", hint: "l" },
   { id: "act:screensaver", label: "Start screensaver", hint: "s" },
+  { id: "act:tools", label: "Open tools page", hint: "↵" },
 ];

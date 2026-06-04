@@ -5,7 +5,7 @@ export function Resume() {
   return (
     <section id="cv" className="section">
       <div className="section-label">
-        <SectionIdx value="06 / 08" />
+        <SectionIdx value="07 / 09" />
         <span>CV — a non-linear line</span>
       </div>
       <div className="resume">

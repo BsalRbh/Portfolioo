@@ -59,7 +59,7 @@ export function WorkCanvas() {
   return (
     <section id="work" className="section projects">
       <div className="section-label">
-        <SectionIdx value="02 / 08" />
+        <SectionIdx value="02 / 09" />
         <span>Selected work — drag to rearrange</span>
       </div>
       <div className="canvas-frame">

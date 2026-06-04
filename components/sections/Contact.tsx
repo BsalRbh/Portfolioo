@@ -4,7 +4,7 @@ export function Contact() {
   return (
     <section id="contact" className="section contact">
       <div className="section-label">
-        <SectionIdx value="08 / 08" />
+        <SectionIdx value="09 / 09" />
         <span>Contact</span>
       </div>
       <div className="contact-shell">

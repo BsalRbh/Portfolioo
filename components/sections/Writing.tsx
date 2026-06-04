@@ -14,7 +14,7 @@ export function Writing({ posts: POSTS }: { posts: PostMeta[] }) {
   return (
     <section id="writing" className="section">
       <div className="section-label">
-        <SectionIdx value="05 / 08" />
+        <SectionIdx value="05 / 09" />
         <span>Writing — click to cycle the stack</span>
       </div>
       <div className="two-col">
