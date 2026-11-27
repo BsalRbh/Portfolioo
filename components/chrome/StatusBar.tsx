@@ -109,6 +109,9 @@ export function StatusBar({ onCommandClick, onHelpClick, onAviaryClick, onLeader
       <div className="group">
         {batteryLabel && <span className="meter">{batteryLabel}</span>}
         {net && <span className="meter">NET · {net}</span>}
+        <a href="/" className="pill" title="Switch to the simple, non-terminal portfolio">
+          ← BACK TO PORTFOLIO
+        </a>
         <button type="button" className="pill" onClick={onCommandClick}>
           ⌘K · COMMAND
         </button>

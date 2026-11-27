@@ -12,3 +12,17 @@ CREATE TABLE IF NOT EXISTS aviary_scores (
 
 CREATE INDEX IF NOT EXISTS aviary_scores_rank_idx
   ON aviary_scores (score DESC, created_at ASC);
+
+-- Tempo Dash leaderboard (the playable edition).
+
+CREATE TABLE IF NOT EXISTS tempo_scores (
+  id          SERIAL PRIMARY KEY,
+  name        TEXT        NOT NULL,
+  score       INTEGER     NOT NULL CHECK (score >= 0),
+  distance    INTEGER     NOT NULL CHECK (distance >= 0),   -- metres driven
+  passengers  INTEGER     NOT NULL CHECK (passengers >= 0),
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS tempo_scores_rank_idx
+  ON tempo_scores (score DESC, created_at ASC);

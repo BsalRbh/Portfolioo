@@ -3,9 +3,7 @@ import type { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote-client/rsc";
 import { getAllSlugs, getAllPostsMeta, getPost } from "@/lib/posts";
 import { BlogBack } from "@/components/sections/BlogBack";
-
-const SITE_URL = "https://bishalrajbahak.com.np";
-const AUTHOR_NAME = "Bishal Rajbahak";
+import { AUTHOR as AUTHOR_NAME, PERSON_ID, SITE_URL, WEBSITE_ID } from "@/lib/site";
 
 export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -21,9 +19,12 @@ export async function generateMetadata({
   if (!post) return { title: "Not found" };
   const url = `${SITE_URL}/blogs/${slug}`;
   return {
-    title: `${post.title} — ${AUTHOR_NAME}`,
+    title: post.title,
     description: post.excerpt,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: url,
+      types: { "application/rss+xml": [{ url: "/feed.xml", title: `${AUTHOR_NAME} — Writing` }] },
+    },
     openGraph: {
       type: "article",
       url,
@@ -31,7 +32,7 @@ export async function generateMetadata({
       description: post.excerpt,
       siteName: `${AUTHOR_NAME} — Portfolio`,
       publishedTime: post.date,
-      authors: [AUTHOR_NAME],
+      authors: [SITE_URL],
     },
     twitter: {
       card: "summary_large_image",
@@ -61,11 +62,11 @@ export default async function BlogPostPage({
     description: post.excerpt,
     datePublished: post.date,
     dateModified: post.date,
-    author: {
-      "@type": "Person",
-      name: AUTHOR_NAME,
-      url: SITE_URL,
-    },
+    author: { "@type": "Person", "@id": PERSON_ID, name: AUTHOR_NAME, url: SITE_URL },
+    publisher: { "@id": PERSON_ID },
+    isPartOf: { "@id": WEBSITE_ID },
+    inLanguage: "en",
+    wordCount: post.content.split(/\s+/).filter(Boolean).length,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": url,

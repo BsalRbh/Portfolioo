@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Newsreader, JetBrains_Mono } from "next/font/google";
 import { Clarity } from "@/components/analytics/Clarity";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
-import "./globals.css";
+import { AUTHOR, SITE_URL, siteJsonLd } from "@/lib/site";
+import "../globals.css";
 
 const serif = Newsreader({
   subsets: ["latin"],
@@ -20,7 +21,6 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-const SITE_URL = "https://bishalrajbahak.com.np";
 const SITE_NAME = "Bishal Rajbahak — Portfolio";
 const SITE_DESCRIPTION =
   "Bishal Rajbahak — full-stack developer (React/Next · Go), based in Kathmandu,Nepal.";
@@ -32,7 +32,10 @@ export const metadata: Metadata = {
     template: "%s — Bishal Rajbahak",
   },
   description: SITE_DESCRIPTION,
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    types: { "application/rss+xml": [{ url: "/feed.xml", title: `${AUTHOR} — Writing` }] },
+  },
   authors: [{ name: "Bishal Rajbahak", url: SITE_URL }],
   creator: "Bishal Rajbahak",
   openGraph: {
@@ -55,26 +58,6 @@ export const metadata: Metadata = {
   },
 };
 
-const personJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Bishal Rajbahak",
-  url: SITE_URL,
-  jobTitle: "Full-Stack Developer",
-  worksFor: { "@type": "Organization", name: "One Accord" },
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Kathmandu",
-    addressCountry: "NP",
-  },
-  knowsAbout: [
-    "React",
-    "Next.js",
-    "Go",
-    "TypeScript",
-    "Full-Stack Development",
-  ],
-};
 
 const themeInitScript = `
 (function() {
@@ -102,7 +85,7 @@ export default function RootLayout({
         {children}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
         <Clarity />
         <GoogleAnalytics />

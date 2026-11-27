@@ -1,0 +1,1727 @@
+/* Kathmandu edition — a Newar house seen from the street.
+   Materials, not decoration: bare red brick (dachi appa), dark aged sal wood,
+   lime-washed plaster, gilt only on the temple roof, painted street signs. */
+
+.v-kathmandu {
+  --sky-top: #9fc2d8;
+  --sky-mid: #d6e3e8;
+  --sky-low: #f2e7d6;
+  --brick: #a9492c;
+  --sal: #23150f; /* aged sal wood */
+  --sal-2: #3d2619; /* carved highlight */
+  --plaster: #efe4cf; /* lime wash */
+  --plaster-ink: #2a1a12;
+  --gilt: #d6a441;
+  --sign: #f3ecda;
+  --sign-red: #b3261e;
+  --sign-blue: #1d3c72;
+  --stone: #6d6862;
+
+  --ed-bg: var(--sal);
+  --ed-fg: #f1e8d8;
+  --ed-muted: #cdbfa8;
+  --ed-accent: var(--gilt);
+  --ed-line: rgba(241, 232, 216, 0.2);
+  --ed-font: var(--k-body), system-ui, sans-serif;
+  --ed-radius: 3px;
+
+  min-height: 100vh;
+  background: var(--brick);
+  color: var(--plaster-ink);
+  font-family: var(--k-body), system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+html:has(.v-kathmandu) {
+  background: var(--sky-top, #9fc2d8);
+}
+
+.v-kathmandu a {
+  color: inherit;
+}
+.v-kathmandu :focus-visible {
+  outline: 3px solid var(--gilt);
+  outline-offset: 3px;
+}
+.v-kathmandu ::selection {
+  background: var(--gilt);
+  color: var(--sal);
+}
+.k-skip {
+  position: absolute;
+  left: -9999px;
+}
+.k-skip:focus {
+  left: 16px;
+  top: 16px;
+  z-index: 70;
+  padding: 6px 12px;
+  background: var(--sign);
+}
+
+.k-wrap {
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Sky ─────────────────────────────────────────── */
+.k-sky {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 48%, var(--sky-low) 100%);
+  color: var(--sal);
+}
+.k-himalaya {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 46%;
+  pointer-events: none;
+}
+.k-himalaya__far {
+  fill: #b7c8d5;
+}
+.k-himalaya__snow {
+  fill: #f8fafb;
+}
+.k-himalaya__near {
+  fill: #8ea49a;
+  opacity: 0.85;
+}
+
+.k-top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 22px;
+  padding-bottom: 22px;
+}
+.k-mark {
+  font-family: var(--k-sign), serif;
+  font-size: 22px;
+  text-decoration: none;
+}
+.k-top ul {
+  display: flex;
+  gap: 26px;
+  list-style: none;
+  font-weight: 600;
+  font-size: 16px;
+}
+.k-top a {
+  text-decoration: none;
+}
+.k-top ul a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.k-hero {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: end;
+  gap: 32px;
+  padding-top: 40px;
+}
+.k-hero__text {
+  padding-bottom: 150px;
+}
+
+.k-plate {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 6px 16px 8px;
+  background: var(--sign);
+  border: 3px solid var(--sign-red);
+  border-radius: 3px;
+  box-shadow:
+    0 0 0 2px var(--sign),
+    0 0 0 4px var(--sal);
+  font-family: var(--k-sign), serif;
+  line-height: 1.15;
+  transform: rotate(-1.2deg);
+}
+.k-plate span:first-child {
+  color: var(--sign-red);
+  font-size: 22px;
+}
+.k-plate span:last-child {
+  color: var(--sign-blue);
+  font-size: 14px;
+}
+
+.k-hero__title {
+  margin-top: 28px;
+  font-family: var(--k-sign), serif;
+  font-weight: 400;
+  font-size: clamp(54px, 8.4vw, 118px);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  color: var(--sal);
+}
+.k-hero__ne {
+  margin-top: 10px;
+  font-family: var(--k-sign), serif;
+  font-size: clamp(24px, 3vw, 34px);
+  color: var(--sign-red);
+}
+.k-hero__lede {
+  margin-top: 22px;
+  max-width: 34em;
+  font-size: 19px;
+  line-height: 1.6;
+  color: #3a2a20;
+}
+.k-actions {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 26px;
+}
+.k-btn {
+  display: inline-block;
+  padding: 12px 26px;
+  background: var(--sal);
+  color: #f6ecdc !important;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 4px solid var(--gilt);
+  border-radius: 2px;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.k-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px -10px rgba(35, 21, 15, 0.7);
+}
+.k-link {
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+.k-status {
+  margin-top: 22px;
+  font-size: 15px;
+  color: #4a3a2e;
+}
+.k-status::before {
+  content: "";
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 9px;
+  border-radius: 50%;
+  background: #2f8a4c;
+  box-shadow: 0 0 0 3px rgba(47, 138, 76, 0.2);
+}
+
+.k-hero__temple {
+  display: flex;
+  justify-content: center;
+}
+.k-pagoda {
+  display: block;
+  width: min(100%, 460px);
+  height: auto;
+  margin-bottom: -2px;
+  filter: drop-shadow(0 20px 24px rgba(35, 21, 15, 0.25));
+}
+
+/* The one orchestrated moment: roofs settle tier by tier, then the gajur glints. */
+.k-pagoda__tier,
+.k-pagoda__gajur {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: k-settle 760ms cubic-bezier(0.2, 0.9, 0.25, 1.15) both;
+}
+.k-pagoda__tier--1 {
+  animation-delay: 150ms;
+}
+.k-pagoda__tier--2 {
+  animation-delay: 420ms;
+}
+.k-pagoda__tier--3 {
+  animation-delay: 690ms;
+}
+.k-pagoda__gajur {
+  animation:
+    k-settle 760ms cubic-bezier(0.2, 0.9, 0.25, 1.15) 960ms both,
+    k-glint 900ms ease-in-out 1750ms both;
+}
+@keyframes k-settle {
+  from {
+    opacity: 0;
+    transform: translateY(-46px);
+  }
+}
+@keyframes k-glint {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  45% {
+    filter: brightness(1.55) drop-shadow(0 0 10px rgba(255, 220, 140, 0.9));
+  }
+}
+
+/* overhead wires, in front of everything — very Kathmandu */
+.k-wires-wrap {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  height: 120px;
+  pointer-events: none;
+}
+.k-wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+/* ── The house ───────────────────────────────────── */
+.k-house {
+  position: relative;
+  background-color: var(--brick);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='36'%3E%3Crect width='128' height='36' fill='%235b2516'/%3E%3Crect x='1' y='1' width='62' height='16' fill='%23a9492c'/%3E%3Crect x='65' y='1' width='62' height='16' fill='%239c4027'/%3E%3Crect x='0' y='19' width='31' height='16' fill='%23b25233'/%3E%3Crect x='33' y='19' width='62' height='16' fill='%23a44529'/%3E%3Crect x='97' y='19' width='31' height='16' fill='%23b25233'/%3E%3C/svg%3E");
+  background-size: 128px 36px;
+}
+
+.k-floor {
+  position: relative;
+  padding-bottom: 88px;
+}
+/* soft shadow the beam casts on the brick */
+.k-floor::before {
+  content: "";
+  position: absolute;
+  top: 34px;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(rgba(20, 8, 4, 0.38), transparent);
+  pointer-events: none;
+}
+.k-floor > .k-wrap {
+  position: relative;
+}
+
+/* carved sal-wood beam between storeys: moulding, bead row, dentils */
+.k-beam {
+  height: 34px;
+  background:
+    linear-gradient(180deg, var(--sal-2) 0 3px, #120a07 3px 5px, transparent 5px),
+    radial-gradient(circle, #6b4630 2.2px, transparent 2.8px) 0 7px / 11px 11px repeat-x,
+    repeating-linear-gradient(90deg, var(--sal-2) 0 11px, #120a07 11px 13px, #2c1b13 13px 17px, #120a07 17px 19px)
+      0 100% / 100% 14px no-repeat,
+    var(--sal);
+  box-shadow: 0 2px 0 #120a07;
+}
+
+/* painted metal street sign */
+.k-sign {
+  position: relative;
+  display: inline-block;
+  margin: 48px 0 36px;
+  padding: 10px 26px 12px;
+  background:
+    radial-gradient(circle at 9px 9px, #8b8682 2.5px, transparent 3px),
+    radial-gradient(circle at calc(100% - 9px) 9px, #8b8682 2.5px, transparent 3px),
+    radial-gradient(circle at 9px calc(100% - 9px), #8b8682 2.5px, transparent 3px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px), #8b8682 2.5px, transparent 3px),
+    var(--sign);
+  border: 3px solid var(--sign-red);
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 3px var(--sign),
+    0 0 0 5px #1b0f0a,
+    0 14px 20px -10px rgba(0, 0, 0, 0.65);
+  transform: rotate(-0.7deg);
+  font-family: var(--k-sign), serif;
+  line-height: 1.1;
+}
+.k-floor:nth-of-type(even) .k-sign {
+  transform: rotate(0.6deg);
+}
+.k-sign__ne {
+  color: var(--sign-red);
+  font-size: 22px;
+}
+.k-sign__en {
+  margin-top: 2px;
+  color: var(--sign-blue);
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 400;
+}
+
+.v-kathmandu h3 {
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.k-meta {
+  font-size: 15px;
+  color: #6a5444;
+}
+
+/* sanjhyal — one wide carved window, three bays */
+.k-sanjhyal {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding: 30px 14px 14px;
+  list-style: none;
+  background:
+    repeating-linear-gradient(90deg, var(--sal-2) 0 8px, #120a07 8px 10px) 0 6px / 100% 12px no-repeat,
+    var(--sal);
+  box-shadow:
+    inset 0 0 0 2px #120a07,
+    0 24px 40px -20px rgba(0, 0, 0, 0.7);
+}
+.k-sanjhyal li {
+  padding: 26px 24px 28px;
+  background: var(--plaster);
+  box-shadow: inset 0 0 0 1px rgba(35, 21, 15, 0.15);
+}
+.k-sanjhyal p {
+  margin-top: 8px;
+  font-size: 17px;
+  color: #4a3a2e;
+}
+
+/* ankhijhyal — lattice windows, one per project */
+.k-windows {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px 36px;
+  list-style: none;
+}
+.k-window {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background: var(--sal);
+  box-shadow:
+    inset 0 0 0 2px #120a07,
+    0 24px 40px -20px rgba(0, 0, 0, 0.7);
+}
+/* lintel that runs past the frame, as on real Newar windows */
+.k-window::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  height: 14px;
+  background:
+    radial-gradient(circle, #6b4630 2px, transparent 2.6px) 0 4px / 10px 10px repeat-x,
+    var(--sal);
+  border-radius: 3px;
+  box-shadow: 0 2px 0 #120a07;
+}
+.k-window__lattice {
+  height: 104px;
+  border: 6px solid var(--sal-2);
+  background:
+    repeating-linear-gradient(45deg, #5a3a28 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(-45deg, #5a3a28 0 2px, transparent 2px 9px),
+    radial-gradient(ellipse at 50% 120%, #4a2a14, #0c0705 70%);
+}
+.k-window__body {
+  flex: 1;
+  margin-top: 12px;
+  padding: 22px 22px 24px;
+  background: var(--plaster);
+}
+.k-window__body h3 {
+  margin-top: 4px;
+  font-size: 24px;
+}
+.k-window__body > p:not(.k-meta):not(.k-tags) {
+  margin-top: 8px;
+  font-size: 17px;
+  color: #4a3a2e;
+}
+.k-tags {
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sign-red);
+}
+
+/* plaster + wood panels */
+.k-story {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+.k-plaster {
+  padding: 34px 36px;
+  background: var(--plaster);
+  box-shadow: 0 24px 40px -20px rgba(0, 0, 0, 0.6);
+}
+.k-plaster p + p {
+  margin-top: 16px;
+}
+.k-plaster p {
+  color: #4a3a2e;
+}
+.k-story__lead {
+  font-family: var(--k-sign), serif;
+  font-size: clamp(24px, 2.6vw, 30px);
+  line-height: 1.3;
+  color: var(--sal) !important;
+}
+.k-panel {
+  padding: 30px 32px;
+  background: var(--sal);
+  color: #efe4d0;
+  box-shadow:
+    inset 0 0 0 2px #120a07,
+    inset 0 0 0 8px var(--sal),
+    inset 0 0 0 9px var(--sal-2),
+    0 24px 40px -20px rgba(0, 0, 0, 0.7);
+}
+.k-panel h3 {
+  color: var(--gilt);
+}
+.k-principles {
+  margin-top: 12px;
+  padding-left: 1.2em;
+  list-style: decimal;
+  font-size: 17px;
+}
+.k-principles li + li {
+  margin-top: 12px;
+}
+.k-principles li::marker {
+  color: var(--gilt);
+  font-weight: 700;
+}
+.k-principles strong {
+  color: #fff6e6;
+}
+
+/* experience — a plaster register in a wooden frame */
+.k-record {
+  list-style: none;
+  padding: 10px 34px;
+  background: var(--plaster);
+  border: 12px solid var(--sal);
+  box-shadow:
+    inset 0 0 0 1px rgba(35, 21, 15, 0.2),
+    0 24px 40px -20px rgba(0, 0, 0, 0.7);
+}
+.k-record > li {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 24px;
+  padding: 24px 0;
+}
+.k-record > li + li {
+  border-top: 3px double rgba(35, 21, 15, 0.25);
+}
+.k-record__year {
+  font-family: var(--k-sign), serif;
+  font-size: 18px;
+  color: var(--sign-red);
+  white-space: nowrap;
+}
+.k-record p:not(.k-meta):not(.k-record__year) {
+  margin-top: 6px;
+  font-size: 17px;
+  color: #4a3a2e;
+  max-width: 62ch;
+}
+.k-now {
+  margin-left: 10px;
+  padding: 1px 8px;
+  background: var(--sign-red);
+  color: var(--sign);
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 600;
+  vertical-align: 3px;
+}
+.k-education {
+  margin-top: 28px;
+}
+.k-education ul {
+  margin-top: 10px;
+  list-style: none;
+}
+.k-education li {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 24px;
+  padding: 8px 0;
+  font-size: 17px;
+}
+.k-education .k-record__year {
+  color: var(--gilt);
+}
+
+/* writing — handbills pasted on the brick */
+.k-posts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+  list-style: none;
+}
+.k-posts li {
+  --rot: 0deg;
+  --ty: 0px;
+  transform: rotate(var(--rot)) translateY(var(--ty));
+}
+.k-posts li:nth-child(1) {
+  --rot: -1.4deg;
+}
+.k-posts li:nth-child(2) {
+  --rot: 0.9deg;
+  --ty: 10px;
+}
+.k-posts li:nth-child(3) {
+  --rot: -0.5deg;
+}
+.k-post {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  padding: 30px 24px 26px;
+  background: #f6f0e2;
+  text-decoration: none;
+  box-shadow: 0 16px 24px -14px rgba(0, 0, 0, 0.7);
+  transition: transform 180ms ease;
+}
+.k-post::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 70px;
+  height: 20px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgba(243, 236, 218, 0.75);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+.k-post:hover {
+  transform: translateY(-4px);
+}
+.k-post__title {
+  font-family: var(--k-sign), serif;
+  font-size: 23px;
+  line-height: 1.2;
+  color: var(--sal);
+}
+.k-post:hover .k-post__title {
+  color: var(--sign-red);
+}
+.k-post__excerpt {
+  font-size: 16px;
+  color: #4a3a2e;
+}
+
+/* ground floor — the front door */
+.k-ground {
+  padding-bottom: 0;
+}
+.k-door {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.k-door__toran {
+  height: 70px;
+  margin: 0 64px;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  background:
+    radial-gradient(ellipse at 50% 110%, transparent 34%, var(--gilt) 34.5% 36%, transparent 36.5%),
+    radial-gradient(ellipse at 50% 110%, transparent 52%, #6b4630 52.5% 54%, transparent 54.5%),
+    var(--sal);
+  box-shadow: inset 0 -3px 0 #120a07;
+}
+.k-door__frame {
+  position: relative;
+  padding: 16px 16px 0;
+  background: var(--sal);
+  box-shadow: inset 0 0 0 2px #120a07;
+}
+.k-door__leaf {
+  background:
+    repeating-linear-gradient(180deg, transparent 0 46px, #120a07 46px 48px),
+    linear-gradient(90deg, #2c1b13, var(--sal-2));
+  box-shadow: inset 0 0 0 2px #120a07;
+}
+.k-door__leaf--r {
+  background:
+    repeating-linear-gradient(180deg, transparent 0 46px, #120a07 46px 48px),
+    linear-gradient(270deg, #2c1b13, var(--sal-2));
+}
+.k-door__inside {
+  padding: 48px 40px 56px;
+  text-align: center;
+  color: var(--sal);
+  background: radial-gradient(ellipse at 50% 30%, #fbe6b8, #f0cf8e 60%, #d9a95e 100%);
+}
+.k-door__inside > p {
+  font-size: 19px;
+}
+.k-door__email {
+  display: inline-block;
+  margin-top: 16px;
+  font-family: var(--k-sign), serif;
+  font-size: clamp(24px, 4vw, 38px);
+  text-decoration: none;
+  border-bottom: 3px solid var(--sal);
+  overflow-wrap: anywhere;
+}
+.k-door__email:hover {
+  color: var(--sign-red);
+  border-color: var(--sign-red);
+}
+.k-door__note {
+  margin: 18px auto 0;
+  max-width: 30em;
+  font-size: 16px;
+  font-style: italic;
+  color: #5a4232;
+}
+.k-door__note a {
+  font-weight: 700;
+  font-style: normal;
+}
+.k-door__links {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  list-style: none;
+  font-weight: 600;
+}
+.k-door__links a {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+.k-door__step {
+  height: 22px;
+  margin: 0 -40px;
+  background: linear-gradient(#8a847c, #5f5a54);
+  box-shadow: 0 2px 0 #3b3733;
+}
+
+/* the street */
+.k-street {
+  padding: 30px 0 90px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 118px, rgba(0, 0, 0, 0.25) 118px 120px),
+    repeating-linear-gradient(180deg, transparent 0 58px, rgba(0, 0, 0, 0.25) 58px 60px),
+    var(--stone);
+  color: #ece6dc;
+  font-size: 15px;
+}
+.k-street .k-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}
+.k-street a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-pagoda__tier,
+  .k-pagoda__gajur {
+    animation: none;
+  }
+  .k-btn,
+  .k-post {
+    transition: none;
+  }
+}
+
+/* ── Smaller screens ─────────────────────────────── */
+@media (max-width: 900px) {
+  .k-hero {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .k-hero__text {
+    padding-bottom: 0;
+  }
+  .k-pagoda {
+    width: min(78%, 360px);
+  }
+  .k-sanjhyal,
+  .k-posts {
+    grid-template-columns: 1fr;
+  }
+  .k-windows {
+    grid-template-columns: 1fr;
+  }
+  .k-story {
+    grid-template-columns: 1fr;
+  }
+  .k-posts li {
+    --rot: 0deg !important;
+    --ty: 0px !important;
+  }
+}
+@media (max-width: 640px) {
+  .v-kathmandu {
+    font-size: 17px;
+  }
+  .k-wrap {
+    padding: 0 16px;
+  }
+  .k-top ul {
+    display: none;
+  }
+  .k-record {
+    padding: 4px 18px;
+    border-width: 8px;
+  }
+  .k-record > li,
+  .k-education li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .k-plaster,
+  .k-panel {
+    padding: 24px 20px;
+  }
+  .k-window::before {
+    left: -10px;
+    right: -10px;
+  }
+  .k-door__frame {
+    padding: 10px 10px 0;
+  }
+  .k-door__toran {
+    margin: 0 14px;
+    height: 46px;
+  }
+  .k-door__inside {
+    padding: 36px 18px 40px;
+  }
+  .k-door__step {
+    margin: 0 -8px;
+  }
+  .k-wires-wrap {
+    height: 80px;
+    bottom: 8px;
+  }
+  .k-pigeon {
+    width: 30px;
+    height: 23px;
+  }
+}
+
+/* ════════════════════ Interactions ════════════════════ */
+
+/* ── Pigeons ── */
+.k-pigeons {
+  position: absolute;
+  inset: 0;
+}
+.k-pigeon {
+  position: absolute;
+  width: 40px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translate(-50%, -92%);
+  transition:
+    transform 1.6s cubic-bezier(0.2, 0.8, 0.3, 1) var(--delay, 0ms),
+    opacity 0.6s ease var(--delay, 0ms);
+}
+.k-pigeon.is-flipped .k-pigeon__bird {
+  transform: scaleX(-1);
+}
+.k-pigeon__bird {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.k-pigeon.is-flying {
+  transform: translate(calc(-50% + var(--dx)), -420%) rotate(-12deg) scale(0.7);
+  opacity: 0;
+  transition:
+    transform 1.1s cubic-bezier(0.5, 0, 0.8, 0.6) var(--delay, 0ms),
+    opacity 0.9s ease calc(var(--delay, 0ms) + 0.3s);
+}
+.k-pigeon.is-flying .k-pigeon__wing {
+  transform-box: fill-box;
+  transform-origin: 0 100%;
+  animation: k-flap 0.16s ease-in-out infinite alternate;
+}
+@keyframes k-flap {
+  to { transform: scaleY(-2.2) translateY(-2px); }
+}
+
+/* ── Prayer wheels ── */
+.k-street-life {
+  padding: 40px 0 34px;
+  background: linear-gradient(#4a3f37, #3b322c);
+  color: #ece6dc;
+  border-top: 3px solid #2a221d;
+}
+.k-wheels {
+  text-align: center;
+}
+.k-wheels__mantra {
+  font-family: var(--k-sign), serif;
+  font-size: 22px;
+  color: var(--gilt);
+}
+.k-wheels__rack {
+  display: flex;
+  justify-content: center;
+  gap: clamp(6px, 1.4vw, 16px);
+  margin: 16px auto 0;
+  padding: 0 12px 10px;
+  max-width: 760px;
+  /* wooden rail the wheels hang in */
+  background:
+    linear-gradient(var(--sal), var(--sal)) 0 0 / 100% 8px no-repeat,
+    linear-gradient(var(--sal), var(--sal)) 0 100% / 100% 8px no-repeat;
+  padding-top: 8px;
+}
+.k-wheel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: clamp(26px, 6vw, 56px);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+}
+.k-wheel__cap {
+  display: block;
+  width: 88%;
+  height: 8px;
+  background: linear-gradient(90deg, #6b4a1c, #e0b14a 45%, #7a5520);
+  border-radius: 2px;
+}
+.k-wheel__drum {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: clamp(54px, 10vw, 92px);
+  background:
+    /* embossed mantra bands, as repeating ribs and studs */
+    repeating-linear-gradient(90deg, transparent 0 14px, rgba(60, 35, 10, 0.55) 14px 16px),
+    radial-gradient(circle at 50% 30%, #fff1c4 0 2.2px, transparent 2.6px) 0 0 / 16px 100%,
+    radial-gradient(circle at 50% 70%, #fff1c4 0 2.2px, transparent 2.6px) 8px 0 / 16px 100%,
+    linear-gradient(#b5852b, #e7bd5a 50%, #a77620);
+  background-repeat: repeat-x;
+  background-position-x: 0;
+}
+/* cylinder shading */
+.k-wheel__drum::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(40, 20, 5, 0.65), transparent 35%, rgba(255, 250, 230, 0.25) 50%, transparent 65%, rgba(40, 20, 5, 0.65));
+}
+.k-wheel__cap--bottom {
+  margin-top: 0;
+}
+.k-wheel:focus-visible {
+  outline-offset: 4px;
+}
+.k-wheels__count {
+  margin-top: 14px;
+  font-size: 15px;
+  color: #cfc6b8;
+}
+
+/* ── Lattice windows: the room lights up on hover ── */
+.k-window__lattice {
+  position: relative;
+}
+/* lattice lines on their own layer so the glow sits between them and the dark room */
+.k-window__lattice {
+  background: radial-gradient(ellipse at 50% 120%, #4a2a14, #0c0705 70%);
+}
+.k-window__lattice::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    repeating-linear-gradient(45deg, #5a3a28 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(-45deg, #5a3a28 0 2px, transparent 2px 9px);
+}
+.k-window__lattice::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse at 50% 70%, #ffd889, #e08a2e 45%, transparent 80%);
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.k-window:hover .k-window__lattice::after,
+.k-window:focus-within .k-window__lattice::after {
+  opacity: 0.9;
+}
+
+/* ── Front door: closed until it scrolls into view ── */
+.k-door__frame .k-door__leaf {
+  position: absolute;
+  top: 16px;
+  bottom: 0;
+  z-index: 2;
+  width: calc(50% - 16px);
+  transition: transform 1.3s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+.k-door__leaf--l {
+  left: 16px;
+  transform-origin: 0 50%;
+}
+.k-door__leaf--r {
+  right: 16px;
+  transform-origin: 100% 50%;
+}
+/* open (default, also without JS) */
+/* open: each leaf folds flat against its side of the doorway */
+.k-door.is-static .k-door__leaf,
+.k-door.is-open .k-door__leaf {
+  transform: scaleX(0.11);
+}
+.k-door.is-closed {
+  cursor: pointer;
+}
+.k-door.is-closed .k-door__leaf {
+  transform: scaleX(1);
+}
+/* door rings (knockers) on the closed leaves */
+.k-door__leaf::after {
+  content: "";
+  position: absolute;
+  top: 46%;
+  width: 22px;
+  height: 22px;
+  border: 3px solid var(--gilt);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+/* door rings only show while the door is shut */
+.k-door.is-closed .k-door__leaf::after {
+  opacity: 1;
+}
+.k-door__leaf--l::after {
+  right: 18px;
+}
+.k-door__leaf--r::after {
+  left: 18px;
+}
+
+@media (max-width: 640px) {
+  .k-door__frame .k-door__leaf {
+    top: 10px;
+    width: calc(50% - 10px);
+  }
+  .k-door__leaf--l {
+    left: 10px;
+  }
+  .k-door__leaf--r {
+    right: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-pigeon.is-flying .k-pigeon__wing {
+    animation: none;
+  }
+  .k-pigeon,
+  .k-door__frame .k-door__leaf {
+    transition: none;
+  }
+}
+
+/* ── Kite (changa) — drag it around the sky ── */
+.k-kite-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.k-top {
+  z-index: 3;
+}
+.k-kite-string {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+.k-kite-string path {
+  fill: none;
+  stroke: rgba(35, 21, 15, 0.45);
+  stroke-width: 1;
+}
+.k-kite {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+}
+.k-kite.is-dragging {
+  cursor: grabbing;
+}
+.k-kite__art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 6px 6px rgba(35, 21, 15, 0.2));
+  transform-origin: 50% 60%;
+  animation: k-kite-flutter 2.6s ease-in-out infinite alternate;
+}
+.k-kite.is-dragging .k-kite__art {
+  animation-duration: 0.5s;
+}
+@keyframes k-kite-flutter {
+  from { transform: rotate(-7deg); }
+  to { transform: rotate(6deg) translateY(-4px); }
+}
+
+/* ── Local time on the hero sign ── */
+.k-plate__time {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Street signs swing on their screws when hovered ── */
+.k-sign,
+.k-plate {
+  --tilt: -0.7deg;
+  transform: rotate(var(--tilt));
+  transform-origin: 50% 0;
+}
+.k-plate {
+  --tilt: -1.2deg;
+}
+.k-floor:nth-of-type(even) .k-sign {
+  --tilt: 0.6deg;
+  transform: rotate(var(--tilt));
+}
+.k-sign:hover,
+.k-plate:hover {
+  animation: k-sign-swing 1.3s cubic-bezier(0.3, 0.6, 0.4, 1);
+}
+@keyframes k-sign-swing {
+  0% { transform: rotate(var(--tilt)); }
+  18% { transform: rotate(calc(var(--tilt) + 5deg)); }
+  40% { transform: rotate(calc(var(--tilt) - 3.5deg)); }
+  62% { transform: rotate(calc(var(--tilt) + 2deg)); }
+  82% { transform: rotate(calc(var(--tilt) - 0.8deg)); }
+  100% { transform: rotate(var(--tilt)); }
+}
+
+/* ── Honking "Email me" ── */
+.k-honk {
+  position: relative;
+}
+.k-honk.is-honking {
+  animation: k-honk 0.5s ease-in-out;
+}
+@keyframes k-honk {
+  0%, 100% { transform: translateY(-2px); }
+  20% { transform: translateY(-2px) rotate(-3deg) scale(1.04); }
+  40% { transform: translateY(-2px) rotate(2.5deg) scale(1.02); }
+  60% { transform: translateY(-2px) rotate(-2deg) scale(1.04); }
+  80% { transform: translateY(-2px) rotate(1deg); }
+}
+.k-honk__bubble {
+  position: absolute;
+  left: 100%;
+  top: -18px;
+  margin-left: -10px;
+  padding: 3px 10px;
+  background: var(--sign);
+  color: var(--sign-red);
+  border: 2px solid var(--sal);
+  border-radius: 12px 12px 12px 2px;
+  font-family: var(--k-sign), serif;
+  font-size: 14px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+}
+.k-honk.is-honking .k-honk__bubble {
+  animation: k-bubble 1.1s ease-out;
+}
+@keyframes k-bubble {
+  0% { opacity: 0; transform: translateY(6px) scale(0.8); }
+  15% { opacity: 1; transform: translateY(0) scale(1.05); }
+  70% { opacity: 1; transform: translateY(-2px); }
+  100% { opacity: 0; transform: translateY(-8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-kite__art,
+  .k-sign:hover,
+  .k-plate:hover,
+  .k-honk.is-honking,
+  .k-honk.is-honking .k-honk__bubble {
+    animation: none;
+  }
+}
+@media (max-width: 640px) {
+  .k-kite {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* ── Pluck the wires: drag them; pull far enough and every pigeon takes off ── */
+.k-wires-anim {
+  position: absolute;
+  inset: 0;
+}
+.k-wires-hit {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8%;
+  height: 46%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+}
+.k-wires-hit.is-grabbing {
+  cursor: grabbing;
+}
+.k-pigeons {
+  z-index: 1;
+}
+
+/* ── Pigeon droppings: fall from the wire, splat on the ground ── */
+.k-drops {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.k-drop {
+  position: absolute;
+  top: calc(100% + 9px); /* the ground, just above the first carved beam */
+  width: 14px;
+  height: 7px;
+  transform: translateX(-50%);
+  animation: k-fall 0.55s cubic-bezier(0.55, 0, 1, 0.45) both;
+}
+/* the falling blob */
+.k-drop::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 4px;
+  height: 6px;
+  margin-left: -2px;
+  border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+  background: #f4f1ea;
+  animation: k-blob-out 0.55s step-end both;
+}
+/* the stain it leaves */
+.k-drop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 60%, #f4f1ea 0 2px, transparent 2.5px),
+    radial-gradient(circle at 78% 40%, #f4f1ea 0 1.5px, transparent 2px),
+    radial-gradient(circle at 92% 75%, #e9e2d2 0 1px, transparent 1.5px),
+    radial-gradient(ellipse at 50% 55%, #f4f1ea 0 38%, #ddd5c2 39% 46%, transparent 48%);
+  transform: rotate(var(--r, 0deg)) scale(0);
+  animation: k-splat 0.25s 0.55s cubic-bezier(0.2, 1.6, 0.4, 1) forwards;
+}
+@keyframes k-fall {
+  from {
+    top: var(--from);
+  }
+}
+@keyframes k-blob-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes k-splat {
+  to {
+    transform: rotate(var(--r, 0deg)) scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .k-drop {
+    animation: none;
+  }
+  .k-drop::before {
+    display: none;
+  }
+  .k-drop::after {
+    animation: none;
+    transform: rotate(var(--r, 0deg));
+  }
+}
+@media (max-width: 640px) {
+  .k-drop {
+    top: 100%;
+  }
+}
+
+/* ════════════════════ Swayambhunath ════════════════════ */
+
+/* ── Stupa on its hill, behind the pagoda ── */
+.k-stupa {
+  position: absolute;
+  z-index: 0;
+  left: 46%;
+  bottom: 18px;
+  width: 250px;
+  height: auto;
+  pointer-events: none;
+}
+.k-flags.is-gusting .k-flag {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: k-flag-gust 1s ease-out both;
+  animation-delay: calc(var(--i) * 35ms);
+}
+@keyframes k-flag-gust {
+  0% { transform: rotate(0) skewY(0); }
+  22% { transform: rotate(22deg) skewY(-10deg); }
+  48% { transform: rotate(-12deg) skewY(6deg); }
+  72% { transform: rotate(6deg) skewY(-3deg); }
+  100% { transform: rotate(0) skewY(0); }
+}
+@media (max-width: 900px) {
+  .k-stupa {
+    display: none;
+  }
+}
+
+/* ── Monkey peeking over a beam ── */
+.k-beam {
+  position: relative;
+  z-index: 2;
+}
+.k-monkey {
+  position: absolute;
+  top: 0;
+  right: 12%;
+  z-index: 3;
+  width: 76px;
+  height: 0;
+}
+.k-monkey__slot {
+  position: absolute;
+  left: 0;
+  bottom: -8px; /* hands overlap the top of the beam */
+  width: 64px;
+  height: 56px;
+  overflow: hidden;
+}
+.k-monkey__btn {
+  position: absolute;
+  left: 2px;
+  bottom: 0;
+  width: 60px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform: translateY(100%);
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+}
+.k-monkey__peek {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.k-monkey.is-peeking .k-monkey__btn {
+  transform: translateY(0);
+}
+.k-monkey.is-running .k-monkey__btn,
+.k-monkey.is-gone .k-monkey__btn {
+  transform: translateY(100%);
+  transition-duration: 0.15s;
+}
+.k-monkey__runner {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 76px;
+  height: 44px;
+  opacity: 0;
+  pointer-events: none;
+}
+.k-monkey__run {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.k-monkey.is-running .k-monkey__runner {
+  opacity: 1;
+  animation: k-monkey-run 1.7s cubic-bezier(0.45, 0, 0.85, 0.6) forwards;
+}
+.k-monkey.is-running .k-monkey__run {
+  animation: k-monkey-hop 0.22s ease-in-out infinite alternate;
+}
+@keyframes k-monkey-run {
+  from { transform: translateX(0) scaleX(-1); }
+  to { transform: translateX(-110vw) scaleX(-1); }
+}
+@keyframes k-monkey-hop {
+  to { transform: translateY(-6px); }
+}
+@media (max-width: 640px) {
+  .k-monkey {
+    right: 6%;
+  }
+}
+
+/* ── Butter lamps ── */
+.k-lamps {
+  margin-top: 30px;
+  text-align: center;
+}
+.k-lamps__row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(8px, 2vw, 18px);
+}
+.k-lamp {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 30px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.k-lamp__flame {
+  width: 8px;
+  height: 15px;
+  margin-bottom: -2px;
+  border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+  background: radial-gradient(ellipse at 50% 72%, #fff7d6 0 24%, #ffc34d 44%, #ff7a1a 68%, transparent 72%);
+  transform-origin: 50% 100%;
+  transform: scale(0.2);
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.k-lamp__bowl {
+  position: relative;
+  width: 28px;
+  height: 13px;
+  border-radius: 0 0 14px 14px / 0 0 12px 12px;
+  background: linear-gradient(#e7bd5a, #8a611a);
+  box-shadow: inset 0 3px 0 #f4e3a6;
+  transition: box-shadow 0.4s ease;
+}
+.k-lamp__bowl::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 12px;
+  height: 6px;
+  margin-left: -6px;
+  border-radius: 0 0 3px 3px;
+  background: #8a611a;
+}
+.k-lamp.is-lit .k-lamp__flame {
+  opacity: 1;
+  transform: scale(1);
+  filter: drop-shadow(0 0 6px rgba(255, 180, 60, 0.9));
+  animation: k-flicker 1.4s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * -130ms);
+}
+.k-lamp.is-lit .k-lamp__bowl {
+  box-shadow:
+    inset 0 3px 0 #f4e3a6,
+    0 -8px 20px rgba(255, 170, 60, 0.4);
+}
+@keyframes k-flicker {
+  0% { transform: scale(1) rotate(-2deg); }
+  30% { transform: scale(0.92, 1.07) rotate(2deg); }
+  60% { transform: scale(1.04, 0.95) rotate(-1deg); }
+  100% { transform: scale(0.96, 1.04) rotate(1.5deg); }
+}
+.k-lamps__count {
+  margin-top: 14px;
+  font-size: 15px;
+  color: #cfc6b8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-flags.is-gusting .k-flag,
+  .k-monkey.is-running .k-monkey__runner,
+  .k-monkey.is-running .k-monkey__run,
+  .k-lamp.is-lit .k-lamp__flame {
+    animation: none;
+  }
+  .k-monkey__btn {
+    transition: none;
+  }
+}
+
+/* ════════════════════ Scroll animations ════════════════════
+   Hidden start states only apply under .fx-ready (added by <ScrollFx/> when
+   JS runs and reduced motion is off). Each [data-reveal] gets .is-in once. */
+
+/* ── Hero parallax: far layers lag behind as you scroll ── */
+.v-kathmandu {
+  --sy: 0px;
+}
+.fx-ready .k-himalaya {
+  transform: translateY(calc(var(--sy) * 0.45));
+}
+.fx-ready .k-stupa {
+  transform: translateY(calc(var(--sy) * 0.3));
+}
+.fx-ready .k-hero__temple {
+  transform: translateY(calc(var(--sy) * 0.1));
+}
+
+/* ── Signs swing into place on their screws ── */
+.fx-ready .k-sign[data-reveal]:not(.is-in) {
+  opacity: 0;
+  transform: translateY(-14px) rotate(calc(var(--tilt) + 16deg));
+}
+.fx-ready .k-sign[data-reveal].is-in:not(.is-done) {
+  animation: k-sign-hang 1.2s cubic-bezier(0.3, 0.6, 0.4, 1) both;
+}
+@keyframes k-sign-hang {
+  0% { opacity: 0; transform: translateY(-14px) rotate(calc(var(--tilt) + 16deg)); }
+  20% { opacity: 1; }
+  38% { transform: translateY(0) rotate(calc(var(--tilt) - 7deg)); }
+  58% { transform: rotate(calc(var(--tilt) + 3.5deg)); }
+  78% { transform: rotate(calc(var(--tilt) - 1.2deg)); }
+  100% { opacity: 1; transform: rotate(var(--tilt)); }
+}
+
+/* ── Work: windows light up one after another ── */
+.fx-ready .k-window[data-reveal].is-in:not(.is-done) .k-window__lattice::after {
+  animation: k-lamp-on 0.6s ease-out forwards;
+  animation-delay: calc(var(--i) * 320ms + 200ms);
+}
+@keyframes k-lamp-on {
+  0% { opacity: 0; }
+  40% { opacity: 0.75; }
+  55% { opacity: 0.35; } /* a little flicker as the bulb catches */
+  100% { opacity: 0.6; }
+}
+/* after the entrance: stay softly lit, brighten on hover */
+.fx-ready .k-window.is-done .k-window__lattice::after {
+  opacity: 0.6;
+}
+.fx-ready .k-window.is-done:hover .k-window__lattice::after,
+.fx-ready .k-window.is-done:focus-within .k-window__lattice::after {
+  opacity: 0.95;
+}
+
+/* ── Story: one pigeon flaps across the wall ── */
+.k-flyby {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 44px;
+  height: 33px;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+}
+.k-flyby .k-pigeon__bird {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(1);
+}
+.fx-ready .k-flyby.is-in {
+  animation: k-flyby 3.4s cubic-bezier(0.4, 0, 0.6, 1) 0.4s forwards;
+}
+.fx-ready .k-flyby.is-in .k-pigeon__wing {
+  transform-box: fill-box;
+  transform-origin: 0 100%;
+  animation: k-flap 0.14s ease-in-out infinite alternate;
+}
+@keyframes k-flyby {
+  0% { opacity: 1; transform: translate(-60px, 40px) rotate(-8deg); }
+  25% { transform: translate(25vw, -10px) rotate(-4deg); }
+  50% { transform: translate(50vw, 30px) rotate(3deg); }
+  75% { transform: translate(75vw, -20px) rotate(-5deg); }
+  99% { opacity: 1; }
+  100% { opacity: 0; transform: translate(105vw, 10px) rotate(-6deg); }
+}
+
+/* ── Experience: entries written into the register ── */
+.k-record > li {
+  position: relative;
+}
+.k-record > li + li {
+  border-top: 0;
+}
+.k-record > li + li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-top: 3px double rgba(35, 21, 15, 0.25);
+  transform-origin: 0 50%;
+}
+.fx-ready .k-record > li[data-reveal]:not(.is-in) > * {
+  opacity: 0;
+}
+.fx-ready .k-record > li[data-reveal]:not(.is-in)::before {
+  transform: scaleX(0);
+}
+.fx-ready .k-record > li[data-reveal].is-in .k-record__year {
+  animation: k-stamp 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.fx-ready .k-record > li[data-reveal].is-in > div {
+  animation: k-ink 0.6s ease-out 0.25s both;
+}
+.fx-ready .k-record > li[data-reveal].is-in::before {
+  animation: k-rule 0.7s cubic-bezier(0.6, 0, 0.3, 1) 0.15s both;
+}
+@keyframes k-stamp {
+  from { opacity: 0; transform: scale(1.6) rotate(-6deg); }
+}
+@keyframes k-ink {
+  from { opacity: 0; transform: translateX(-6px); }
+}
+@keyframes k-rule {
+  from { transform: scaleX(0); }
+}
+
+/* ── Writing: handbills slapped onto the wall ── */
+.fx-ready .k-posts li[data-reveal]:not(.is-in) {
+  opacity: 0;
+}
+.fx-ready .k-posts li[data-reveal].is-in {
+  animation: k-slap 0.45s cubic-bezier(0.3, 1.5, 0.5, 1) both;
+  animation-delay: calc(var(--i) * 220ms);
+}
+.fx-ready .k-posts li[data-reveal] .k-post::before {
+  opacity: 0;
+}
+.fx-ready .k-posts li[data-reveal].is-in .k-post::before {
+  animation: k-tape 0.3s ease-out forwards;
+  animation-delay: calc(var(--i) * 220ms + 380ms);
+}
+@keyframes k-slap {
+  0% { opacity: 0; transform: rotate(calc(var(--rot) - 6deg)) translateY(calc(var(--ty) - 24px)) scale(1.18); }
+  60% { opacity: 1; transform: rotate(var(--rot)) translateY(var(--ty)) scale(0.97); }
+  100% { opacity: 1; transform: rotate(var(--rot)) translateY(var(--ty)) scale(1); }
+}
+@keyframes k-tape {
+  from { opacity: 0; transform: translateX(-50%) rotate(-3deg) scale(1.4); }
+  to { opacity: 1; transform: translateX(-50%) rotate(-3deg) scale(1); }
+}
+
+/* ── Floor indicator: carved plate on the left edge ── */
+.k-floorplate {
+  position: fixed;
+  left: 18px;
+  top: 50%;
+  z-index: 55;
+  width: 64px;
+  padding: 10px 6px 12px;
+  transform: translate(-120%, -50%);
+  opacity: 0;
+  background: var(--sal);
+  color: #efe4d0;
+  border: 2px solid #120a07;
+  box-shadow:
+    inset 0 0 0 3px var(--sal),
+    inset 0 0 0 4px var(--sal-2),
+    0 12px 24px -10px rgba(0, 0, 0, 0.6);
+  border-radius: 3px;
+  text-align: center;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.3s ease;
+}
+.k-floorplate.is-visible {
+  transform: translate(0, -50%);
+  opacity: 1;
+}
+.k-floorplate__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: k-plate-flip 0.35s ease-out;
+}
+.k-floorplate__n {
+  font-family: var(--k-sign), serif;
+  font-size: 30px;
+  line-height: 1.1;
+  color: var(--gilt);
+}
+.k-floorplate__label {
+  font-family: var(--k-sign), serif;
+  font-size: 13px;
+  color: #cdbfa8;
+}
+.k-floorplate__en {
+  margin-top: 6px;
+  font-size: 10px;
+  line-height: 1.2;
+  color: #cdbfa8;
+}
+@keyframes k-plate-flip {
+  from { opacity: 0; transform: translateY(-8px); }
+}
+@media (max-width: 1320px) {
+  .k-floorplate {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-floorplate,
+  .k-floorplate__inner {
+    transition: none;
+    animation: none;
+  }
+}
