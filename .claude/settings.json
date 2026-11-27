@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "ClaudeInChromeDomain(localhost:3123)",
+      "ClaudeInChromeDomain(bishalrajbahak.com.np)",
+      "ClaudeInChromeDomain(localhost:3124)",
+      "ClaudeInChromeDomain(localhost:3125)",
+      "ClaudeInChromeDomain(localhost:3130)",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "ClaudeInChromeDomain(localhost:3000)"
+    ]
+  }
+}

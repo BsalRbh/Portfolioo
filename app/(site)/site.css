@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+/* Shared base for the editioned portfolio at "/".
+   Each edition owns its look in its own stylesheet, scoped under
+   .v-<edition>. This file only holds what every edition shares:
+   the edition switcher and the first-visit chooser. */
+
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ───────────────────────── First-visit chooser ───────────────────────── */
+.chooser {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  padding: 24px 16px;
+  background: rgba(18, 14, 11, 0.72);
+  backdrop-filter: blur(6px);
+  animation: chooser-fade 240ms ease-out;
+  font-family: var(--font-newsreader), Georgia, serif;
+}
+.chooser__panel {
+  width: min(880px, 100%);
+  padding: clamp(24px, 5vw, 48px);
+  background: #f6f2ea;
+  color: #1d1a16;
+  border-radius: 4px;
+  box-shadow: 0 40px 120px -30px rgba(0, 0, 0, 0.7);
+}
+.chooser__kicker {
+  font: 500 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+  color: #7a7166;
+}
+.chooser__title {
+  margin-top: 14px;
+  font-size: clamp(32px, 5.5vw, 56px);
+  line-height: 1.02;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+.chooser__lede {
+  margin-top: 14px;
+  max-width: 54ch;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #4a443c;
+}
+.chooser__grid {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 22px);
+  list-style: none;
+}
+@media (max-width: 640px) {
+  .chooser__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.chooser__option {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 4px;
+}
+.chooser__cover {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
+  border-radius: 2px 6px 6px 2px;
+  box-shadow:
+    inset 4px 0 0 rgba(0, 0, 0, 0.18),
+    0 10px 24px -10px rgba(0, 0, 0, 0.5);
+  transition:
+    transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 260ms ease;
+  animation: chooser-deal 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.chooser__grid li:nth-child(1) .chooser__cover { animation-delay: 80ms; }
+.chooser__grid li:nth-child(2) .chooser__cover { animation-delay: 160ms; }
+.chooser__grid li:nth-child(3) .chooser__cover { animation-delay: 240ms; }
+.chooser__grid li:nth-child(4) .chooser__cover { animation-delay: 320ms; }
+
+.chooser__option:hover .chooser__cover,
+.chooser__option:focus-visible .chooser__cover {
+  transform: translateY(-8px) rotate(-2deg);
+  box-shadow:
+    inset 4px 0 0 rgba(0, 0, 0, 0.18),
+    0 22px 36px -14px rgba(0, 0, 0, 0.6);
+}
+.chooser__option:focus-visible {
+  outline: 2px solid #1d1a16;
+  outline-offset: 6px;
+}
+/* Cover emblems */
+.chooser__cover > span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.chooser__cover--tempo > span::before {
+  /* a safa tempo seen from above */
+  content: "";
+  width: 30%;
+  aspect-ratio: 0.62;
+  margin-top: 18%;
+  border-radius: 40% 40% 14% 14% / 26% 26% 10% 10%;
+  background:
+    linear-gradient(#cfe7f0, #cfe7f0) 50% 14% / 70% 16% no-repeat,
+    linear-gradient(#f4f1ea, #f4f1ea) 50% 62% / 76% 30% no-repeat,
+    #2f8a4c;
+  box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.5);
+}
+.chooser__cover--kathmandu > span::before {
+  /* a little two-tier roof on the skyline */
+  content: "";
+  width: 62%;
+  aspect-ratio: 1.3;
+  margin-bottom: 18%;
+  background: #23150f;
+  clip-path: polygon(50% 0, 56% 12%, 66% 12%, 80% 34%, 64% 34%, 64% 46%, 100% 72%, 70% 72%, 70% 100%, 30% 100%, 30% 72%, 0 72%, 36% 46%, 36% 34%, 20% 34%, 34% 12%, 44% 12%);
+}
+.chooser__cover--ledger > span::before {
+  content: "SHIPPED";
+  font: 800 15px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.12em;
+  color: #c0392b;
+  padding: 6px 10px;
+  border: 3px double #c0392b;
+  transform: rotate(-12deg);
+  opacity: 0.85;
+}
+.chooser__cover--terminal > span::before {
+  content: "$ _";
+  font: 700 22px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #c8ff00;
+}
+.chooser__option strong {
+  display: block;
+  margin-top: 14px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.chooser__option small {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #6a6258;
+}
+.chooser__skip {
+  margin-top: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 16px;
+  color: #4a443c;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.chooser__skip:hover {
+  color: #1d1a16;
+}
+
+@keyframes chooser-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes chooser-deal {
+  from {
+    opacity: 0;
+    transform: translateY(24px) rotate(4deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chooser,
+  .chooser__cover,
+  .edition-switch ul {
+    animation: none;
+  }
+  .chooser__cover {
+    transition: none;
+  }
+}

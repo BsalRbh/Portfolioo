@@ -34,4 +34,5 @@ export const COMMANDS: Command[] = [
   { id: "act:leaderboard", label: "View aviary leaderboard", hint: "l" },
   { id: "act:screensaver", label: "Start screensaver", hint: "s" },
   { id: "act:tools", label: "Open tools page", hint: "↵" },
+  { id: "act:simple", label: "Back to the main portfolio (non-terminal)", hint: "↵" },
 ];

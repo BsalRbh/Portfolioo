@@ -65,6 +65,8 @@ export function CommandPalette({ open, seed, onClose, toggleTheme, toggleAviary,
       startScreensaver();
     } else if (cmd.id === "act:tools") {
       window.location.href = "/tools";
+    } else if (cmd.id === "act:simple") {
+      window.location.href = "/";
     }
     onClose();
   };

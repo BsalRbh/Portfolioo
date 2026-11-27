@@ -251,6 +251,7 @@ body::before {
   font: inherit;
   letter-spacing: inherit;
   text-transform: inherit;
+  text-decoration: none;
 }
 .statusbar .pill:hover { border-color: var(--accent); color: var(--paper); }
 .statusbar .pill.on { border-color: var(--accent); color: var(--accent); }
@@ -1761,4 +1762,52 @@ footer.site-footer .big {
 
 @media (pointer: coarse) {
   .ic-back, .ic-drop, .ic-seg, .ic-range, .ic-btn, .ic-x-btn { cursor: pointer; }
+}
+
+/* Edition switcher (shared component) — terminal styling + placement.
+   Sits above the keys footer; on touch devices it moves bottom-left so it
+   doesn't collide with the mobile FAB. */
+.terminal-edition {
+  --ed-bg: var(--ink);
+  --ed-fg: var(--paper);
+  --ed-muted: var(--paper-dim);
+  --ed-accent: var(--accent);
+  --ed-line: var(--line-strong);
+  --ed-font: var(--mono);
+  --ed-radius: 999px;
+}
+.terminal-edition .edition-switch {
+  bottom: 58px;
+  right: 30px;
+  z-index: 70;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.terminal-edition .edition-switch summary {
+  cursor: none;
+  font-size: 11px;
+  box-shadow: none;
+}
+.terminal-edition .edition-switch summary:hover { border-color: var(--accent); }
+.terminal-edition .edition-switch a { cursor: none; }
+.terminal-edition .edition-switch small { text-transform: none; letter-spacing: 0; }
+.terminal-edition .edition-switch ul { border-radius: 4px; }
+@media (pointer: coarse) {
+  .terminal-edition .edition-switch summary,
+  .terminal-edition .edition-switch a { cursor: auto; }
+}
+@media (hover: none) {
+  .terminal-edition .edition-switch {
+    left: 18px;
+    right: auto;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  }
+  .terminal-edition .edition-switch ul {
+    left: 0;
+    right: auto;
+    transform-origin: bottom left;
+  }
+}
+@media (max-width: 640px) and (hover: hover) {
+  .terminal-edition .edition-switch { bottom: 64px; right: 14px; }
 }
